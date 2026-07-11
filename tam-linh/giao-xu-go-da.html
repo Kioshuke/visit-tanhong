@@ -75,17 +75,41 @@
           <aside class="location-aside reveal">
             <h3>Thông tin nhanh</h3>
             <div class="location-facts">
-              <div class="location-fact">
+              <div class="location-fact location-fact--copy">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                <span><strong>Vị trí</strong>Huyện Tân Hồng, tỉnh Đồng Tháp</span>
+                <div class="location-fact-content">
+                  <span><strong>Vị trí</strong>Huyện Tân Hồng, tỉnh Đồng Tháp</span>
+                  <button class="btn-copy-address" id="copyAddressBtn" type="button" aria-label="Sao chép địa chỉ">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                  </button>
+                </div>
+                <p class="copy-feedback" id="copyFeedback"></p>
               </div>
               <div class="location-fact">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20h16M4 11l8-5 8 5v9H4v-9zM12 3v4"/></svg>
                 <span><strong>Loại hình</strong>Cơ sở Công giáo</span>
               </div>
               <div class="location-fact">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                <span><strong>Năm thành lập</strong>None</span>
+              </div>
+              <div class="location-fact">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Công nhận</strong>None</span>
+              </div>
+              <div class="location-fact">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M3 11h18"/></svg>
                 <span><strong>Chi phí tham quan</strong>Miễn phí</span>
+              </div>
+              <div class="location-fact location-fact--map">
+                <div class="map-embed">
+                  <iframe
+                    src="https://www.google.com/maps?q=Gi%C3%A1o%20X%C3%BA%20G%C3%B2%20Da%2C%20T%C3%A2n%20H%E1%BB%93ng%2C%20%C4%90%E1%BB%93ng%20Th%C3%A1p&output=embed"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    aria-label="Bản đồ vị trí Giáo Xứ Gò Da"
+                  ></iframe>
+                </div>
               </div>
             </div>
           </aside>
