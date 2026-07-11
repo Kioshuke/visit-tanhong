@@ -9,4 +9,53 @@
         <priority>1.0</priority>
     </url>
 
+    <url>
+        <loc>https://visit-tanhong.pages.dev/tam-linh/chua-don-hau.html</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://visit-tanhong.pages.dev/tam-linh/chua-lap-phuc.html</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://visit-tanhong.pages.dev/tam-linh/chua-phong-son.html</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://visit-tanhong.pages.dev/tam-linh/chua-phuoc-thien.html</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://visit-tanhong.pages.dev/tam-linh/giao-xu-go-da.html</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://visit-tanhong.pages.dev/tam-linh/nha-tho-tan-hong.html</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://visit-tanhong.pages.dev/tam-linh/thanh-that-tan-hong.html</loc>
+        <lastmod>2026-07-11</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
 </urlset>
