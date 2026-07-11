@@ -1,357 +1,229 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>404 - Không tìm thấy trang | Explore Tân Hồng</title>
-
-<meta name="robots" content="noindex">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-
-    font-family:'Be Vietnam Pro',sans-serif;
-    background:linear-gradient(135deg,#E8F8F5,#FDFEFE);
-    min-height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    color:#1f2937;
-    padding:30px;
-}
-
-.container{
-
-    width:100%;
-    max-width:900px;
-
-    background:#fff;
-    border-radius:25px;
-
-    padding:60px;
-
-    text-align:center;
-
-    box-shadow:0 15px 40px rgba(0,0,0,.08);
-
-}
-
-.compass{
-
-    font-size:80px;
-    animation:float 3s ease-in-out infinite;
-
-}
-
-@keyframes float{
-
-    50%{
-
-        transform:translateY(-10px);
-
-    }
-
-}
-
-.error{
-
-    font-size:120px;
-    font-weight:700;
-    color:#0F766E;
-
-    margin-top:10px;
-}
-
-.title{
-
-    font-size:36px;
-    margin-top:10px;
-}
-
-.subtitle{
-
-    margin:25px auto;
-
-    max-width:620px;
-
-    color:#6b7280;
-
-    line-height:1.8;
-    font-size:18px;
-
-}
-
-.quote{
-
-    font-style:italic;
-    color:#0F766E;
-
-    margin-bottom:40px;
-}
-
-.buttons{
-
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-
-}
-
-.btn{
-
-    padding:15px 28px;
-
-    border-radius:12px;
-
-    text-decoration:none;
-
-    font-weight:600;
-
-    transition:.3s;
-
-}
-
-.home{
-
-    background:#0F766E;
-    color:white;
-
-}
-
-.home:hover{
-
-    background:#0d5d57;
-    transform:translateY(-3px);
-
-}
-
-.place{
-
-    background:#ECFDF5;
-    color:#0F766E;
-    border:2px solid #0F766E;
-
-}
-
-.place:hover{
-
-    background:#D1FAE5;
-    transform:translateY(-3px);
-
-}
-
-.cards{
-
-    margin-top:60px;
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-
-    gap:20px;
-
-}
-
-.card{
-
-    background:#F9FAFB;
-
-    border-radius:18px;
-
-    padding:25px;
-
-    text-decoration:none;
-
-    color:#374151;
-
-    transition:.3s;
-
-}
-
-.card:hover{
-
-    transform:translateY(-8px);
-
-    background:white;
-
-    box-shadow:0 12px 25px rgba(0,0,0,.08);
-
-}
-
-.card span{
-
-    font-size:42px;
-
-}
-
-.card h3{
-
-    margin-top:15px;
-    margin-bottom:10px;
-
-    font-size:18px;
-
-}
-
-.card p{
-
-    font-size:14px;
-    color:#6b7280;
-    line-height:1.6;
-
-}
-
-.footer{
-
-    margin-top:50px;
-    color:#9ca3af;
-    font-size:14px;
-
-}
-
-@media(max-width:768px){
-
-.container{
-
-padding:40px 25px;
-
-}
-
-.error{
-
-font-size:90px;
-
-}
-
-.title{
-
-font-size:28px;
-
-}
-
-.subtitle{
-
-font-size:16px;
-
-}
-
-}
-
-</style>
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>404 - Không tìm thấy | Explore Tân Hồng</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href="/assets/pic/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Page-specific tweaks kept minimal; rely on site styles */
+        :root { --error-header-offset: 88px; }
+        /* ensure the hero isn't hidden under a fixed header on this page */
+        .error-hero { padding-block-start: calc(var(--error-header-offset) + 24px); padding-block-end: clamp(48px, 10vh, 80px); }
+
+        /* gentle header visual override only on this page */
+        .site-header { background: rgba(255,255,255,0.96) !important; backdrop-filter: blur(6px); box-shadow: 0 1px 0 rgba(15,23,32,0.04); position: relative; z-index: 1200; }
+        .site-header .brand-text, .site-header .nav-link, .site-header .navbar-actions { color: var(--color-text, #0f1720) !important; }
+        .site-header .brand-mark svg { color: var(--color-primary-dark, #0f766e); }
+
+        .error-card { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr min(520px,44vw); gap: 28px; align-items: start; }
+        .error-left { text-align: left; }
+        .error-left .eyebrow { margin-bottom: 12px; }
+        .error-number { font-size: 6.4rem; color: var(--color-primary-dark); font-weight: 700; margin: 0 0 8px; }
+        .error-title { font-size: clamp(1.6rem, 3.6vw, 2.4rem); margin-bottom: 12px; }
+        .error-sub { color: var(--color-text-muted); max-width: 48ch; }
+        .error-actions { margin-top: 20px; display:flex; gap:12px; }
+        .error-suggestions { display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; margin-top:12px; }
+
+        /* Make suggestion thumbnails taller and consistent */
+        .error-suggestions .card { padding:12px; transition: transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .28s; will-change: transform; border-radius:12px; overflow:hidden; }
+        .error-suggestions .card-media { height:190px; overflow:hidden; border-radius:10px; }
+        .error-suggestions img { width:100%; height:100%; object-fit:cover; display:block; }
+
+        /* hover / focus effects for suggestion cards */
+        .error-suggestions .card:hover, .error-suggestions .card:focus-within { transform: translateY(-8px) scale(1.02); box-shadow: 0 18px 40px rgba(15,23,32,0.12); }
+        .error-suggestions .card:focus-visible { outline: 3px solid rgba(15,118,110,0.14); outline-offset: 6px; }
+
+        /* increase aside card heights */
+        .error-aside .card { min-height: 140px; display:flex; flex-direction:column; justify-content:flex-start; }
+
+        .error-aside { display:flex; flex-direction:column; gap:14px; }
+
+        /* Advice card animation */
+        @keyframes slideInUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes floatY { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+        .advice-card { animation: slideInUp 620ms cubic-bezier(.2,.9,.3,1) both, floatY 6s ease-in-out 1s infinite; }
+
+        @media (max-width: 980px) { .error-card { grid-template-columns: 1fr; } .error-suggestions { grid-template-columns: 1fr; } }
+        @media (max-width: 700px) { .error-suggestions .card-media { height:120px; } }
+        /* --- Page animation styles (kept local and easy to maintain) --- */
+        /* initial hidden state applied to staged elements */
+        .staged { opacity: 0; transform: translateY(12px) scale(0.995); will-change: opacity, transform; }
+
+        /* visible state toggled by JS */
+        .is-visible { opacity: 1; transform: translateY(0) scale(1); transition: opacity 520ms cubic-bezier(.2,.9,.3,1), transform 520ms cubic-bezier(.2,.9,.3,1); }
+
+        /* compass */
+        .compass-icon { font-size: 36px; display:inline-block; line-height:1; margin-bottom:8px; transform-origin:center center; }
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin-fast { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .compass-icon.spin { animation: spin-slow 25s linear infinite; }
+        .compass-icon.spin-fast { animation: spin-fast 6s linear infinite; }
+        .compass-icon:hover { transform: scale(1.08); }
+
+        /* specific 404 number animation (scale from 0.8 -> 1) */
+        .error-number.staged { transform: scale(.8) translateY(6px); opacity: 0; }
+        .error-number.is-visible { transition: transform 700ms cubic-bezier(.2,.9,.3,1), opacity 700ms ease-out; transform: scale(1) translateY(0); opacity:1; }
+
+        /* fade-up for title/description */
+        .fade-up.staged { transform: translateY(25px); opacity:0; }
+        .fade-up.is-visible { transition: transform 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms ease-out; transform: translateY(0); opacity:1; }
+
+        /* buttons micro-interaction */
+        .btn.staged { transform: translateY(8px); opacity:0; }
+        .btn.is-visible { transition: transform 360ms cubic-bezier(.2,.9,.3,1), opacity 360ms ease-out; transform: translateY(0); opacity:1; }
+
+        /* primary button shine */
+        .btn-primary { position:relative; overflow:hidden; }
+        .btn-primary::after { content: ''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0) 100%); transform: skewX(-18deg); transition: transform 480ms ease-out; pointer-events:none; }
+        .btn-primary:hover::after { transform: translateX(220%) skewX(-18deg); }
+        .btn-primary:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 18px 40px rgba(15,23,32,0.12); }
+        .btn-ghost:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(15,23,32,0.06); background: rgba(0,0,0,0.04); }
+
+        /* card hover refinements */
+        .error-suggestions .card { transition: transform .32s cubic-bezier(.2,.9,.3,1), box-shadow .32s, border-color .32s; }
+        .error-suggestions .card .card-media { transition: transform .36s cubic-bezier(.2,.9,.3,1), filter .32s; }
+        .error-suggestions .card:hover .card-media, .error-suggestions .card:focus-within .card-media { transform: scale(1.08); filter: brightness(1.04); }
+
+        /* cards initial fade-up staging */
+        .error-suggestions .card.staged { transform: translateY(18px) scale(.995); opacity:0; }
+        .error-suggestions .card.is-visible { transform: translateY(0) scale(1); opacity:1; transition: transform 420ms cubic-bezier(.2,.9,.3,1), opacity 420ms ease-out; }
+
+        /* subtle background overlay (very low opacity) */
+        .page-bg-overlay { position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(rgba(15,118,110,0.02) 0.5px, transparent 0.5px); background-size: 260px 260px; opacity: 0.04; }
+
+        /* Accessibility: respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .staged, .is-visible, .compass-icon { animation: none !important; transition: none !important; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <div data-include="header.html"></div>
 
-<div class="compass">
-🧭
-</div>
+    <main id="main-content">
+        <section class="section error-hero">
+            <div class="container">
+                <div class="error-card">
+                    <div class="error-left">
+                            <div class="compass-icon spin staged" aria-hidden="true">🛞</div>
+                            <p class="eyebrow">Lỗi 404</p>
+                            <div class="error-number staged">404</div>
+                            <h1 class="error-title fade-up staged">Ôi! Có vẻ bạn đã đi lạc...</h1>
+                            <p class="error-sub fade-up staged">Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển. Đừng lo — vẫn còn rất nhiều điểm đến thú vị chờ bạn khám phá ở Tân Hồng.</p>
+                            <div class="error-actions">
+                                <a href="index.html" class="btn btn-primary staged">Về trang chủ</a>
+                                <a href="index.html#destinations" class="btn btn-ghost staged">Xem điểm đến</a>
+                            </div>
 
-<div class="error">
-404
-</div>
+                        
+                    </div>
+                    <div class="error-aside">
+                        <div class="error-suggestions">
+                            <a class="card staged" href="tam-linh/chua-phuoc-thien.html">
+                                <div class="card-media" style="aspect-ratio:4/3"><img src="assets/images/chua-phuoc-thien.jpg" alt="Chùa Phước Thiện" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
+                                <div class="card-body"><h3>Chùa Phước Thiện</h3><p class="card-desc">Điểm đến tâm linh nổi tiếng của huyện Tân Hồng.</p></div>
+                            </a>
+                            <a class="card staged" href="tam-linh/nha-tho-tan-hong.html">
+                                <div class="card-media" style="aspect-ratio:4/3"><img src="assets/images/nha-tho-tan-hong.jpg" alt="Nhà Thờ Tân Hồng" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div>
+                                <div class="card-body"><h3>Nhà Thờ Tân Hồng</h3><p class="card-desc">Không gian sinh hoạt tôn giáo ấm cúng của cộng đồng địa phương.</p></div>
+                            </a>
+                        </div>
 
-<h1 class="title">
-Ôi! Có vẻ bạn đã đi lạc...
-</h1>
+                            <!-- removed advice card per request; suggestions now have hover effects -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-<p class="subtitle">
-Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.
-Đừng lo, vẫn còn rất nhiều điểm đến thú vị đang chờ bạn khám phá.
-</p>
+    <div data-include="footer.html"></div>
 
-<div class="quote">
-"Bản đồ này chưa dẫn tới điểm đến bạn mong muốn."
-</div>
+        <div class="page-bg-overlay" aria-hidden="true"></div>
 
-<div class="buttons">
+        <script>
+        // Page-specific animation sequencing for 404
+        // - Uses CSS classes 'staged' -> 'is-visible' to reveal items in order
+        // - Respects prefers-reduced-motion
+        (function(){
+            // Respect user preference for reduced motion
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-<a href="/" class="btn home">
-🏠 Trang chủ
-</a>
+            var compass = document.querySelector('.compass-icon');
+            var num = document.querySelector('.error-number');
+            var title = document.querySelector('.error-title');
+            var desc = document.querySelector('.error-sub');
+            var buttons = Array.from(document.querySelectorAll('.error-actions .btn'));
+            var cards = Array.from(document.querySelectorAll('.error-suggestions .card'));
 
-<a href="/dia-diem/" class="btn place">
-📍 Khám phá địa điểm
-</a>
+            // helper to reveal element after delay
+            function reveal(el, delay){
+                if(!el) return;
+                window.setTimeout(function(){
+                    el.classList.add('is-visible');
+                    el.classList.remove('staged');
+                }, delay);
+            }
 
-</div>
+            if(reduce){
+                // Immediately show everything when reduced-motion is requested
+                [compass,num,title,desc].forEach(function(el){ if(el){ el.classList.add('is-visible'); el.classList.remove('staged'); }});
+                buttons.forEach(function(b){ b.classList.add('is-visible'); b.classList.remove('staged'); });
+                cards.forEach(function(c){ c.classList.add('is-visible'); c.classList.remove('staged'); });
+                // stop compass animation
+                if(compass){ compass.classList.remove('spin'); }
+                return;
+            }
 
-<div class="cards">
+            // sequence timings (ms)
+            var base = 140; // initial delay
+            var gap = 100;  // between major items (80-120ms per spec)
 
-<a href="/dia-diem/chua-phuoc-thien/" class="card">
+            // Reveal order: compass -> 404 -> title -> desc -> buttons -> cards
+            reveal(compass, base);
+            reveal(num, base + gap);
+            reveal(title, base + gap*2);
+            reveal(desc, base + gap*3);
 
-<span>🛕</span>
+            // buttons together with slight offset between them
+            var btnStart = base + gap*4;
+            buttons.forEach(function(b,i){ reveal(b, btnStart + i*90); });
 
-<h3>Chùa Phước Thiện</h3>
+            // cards appear staggered with increasing delay (150ms, 250ms, ...)
+            var cardStart = btnStart + 220;
+            cards.forEach(function(c,i){ reveal(c, cardStart + 150*(i+1)); });
 
-<p>
-Điểm đến tâm linh nổi tiếng của huyện Tân Hồng.
-</p>
+            // Compass hover: speed up rotation
+            if(compass){
+                compass.addEventListener('mouseenter', function(){ compass.classList.remove('spin'); compass.classList.add('spin-fast'); });
+                compass.addEventListener('mouseleave', function(){ compass.classList.remove('spin-fast'); compass.classList.add('spin'); });
+                // also support focus for keyboard users
+                compass.setAttribute('tabindex', '-1');
+            }
 
-</a>
+            // Accessibility: ensure keyboard focus shows visible state
+            buttons.forEach(function(b){ b.addEventListener('focus', function(){ b.classList.add('is-visible'); b.classList.remove('staged'); }); });
 
-<a href="/dia-diem/go-quang-cung/" class="card">
-
-<span>🌿</span>
-
-<h3>Gò Quảng Cung</h3>
-
-<p>
-Không gian thiên nhiên yên bình và trong lành.
-</p>
-
-</a>
-
-<a href="/am-thuc/" class="card">
-
-<span>🍜</span>
-
-<h3>Ẩm thực</h3>
-
-<p>
-Khám phá những món ăn đặc sản địa phương.
-</p>
-
-</a>
-
-<a href="/tin-tuc/" class="card">
-
-<span>📰</span>
-
-<h3>Tin tức</h3>
-
-<p>
-Thông tin mới nhất về du lịch và sự kiện.
-</p>
-
-</a>
-
-</div>
-
-<div class="footer">
-
-© 2026 Explore Tân Hồng • Khám phá vẻ đẹp vùng đất biên giới.
-
-</div>
-
-</div>
-
+            // IntersectionObserver fallback: if cards are off-screen, reveal on enter
+            if('IntersectionObserver' in window){
+                var io = new IntersectionObserver(function(entries){
+                    entries.forEach(function(entry){
+                        if(entry.isIntersecting){
+                            entry.target.classList.add('is-visible'); entry.target.classList.remove('staged');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12 });
+                cards.forEach(function(c){ if(!c.classList.contains('is-visible')) io.observe(c); });
+            }
+        })();
+        </script>
+        <script src="script.js"></script>
 </body>
 </html>
