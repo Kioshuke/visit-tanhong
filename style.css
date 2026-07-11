@@ -387,12 +387,18 @@ html[data-theme='dark'] .icon-moon { display: block; }
   text-wrap: balance;
 }
 
+/* Improve legibility over the hero image: explicit white title and soft shadow */
+.hero-title {
+  color: #ffffff;
+  text-shadow: 0 8px 30px rgba(11, 20, 32, 0.65);
+}
+
 .hero-title em { color: var(--color-accent); font-style: italic; }
 
 .hero-subtitle {
   margin-top: 20px;
   font-size: clamp(1rem, 1.6vw, 1.2rem);
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.96);
   max-width: 560px;
   margin-inline: auto;
 }
@@ -550,6 +556,59 @@ html[data-theme='dark'] .icon-moon { display: block; }
   flex-direction: column;
   gap: 10px;
   flex: 1;
+}
+
+/* ==========================================================================
+   Spiritual slider (3-up carousel)
+   ========================================================================== */
+.spiritual-slider {
+  --slider-gap: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.slider-viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider-track {
+  display: flex;
+  gap: var(--slider-gap);
+  transition: transform var(--transition-med) var(--ease);
+  will-change: transform;
+}
+
+.slider-track .card {
+  flex: 0 0 calc((100% - (var(--slider-gap) * 2)) / 3);
+}
+
+.slider-btn {
+  background: rgba(255,255,255,0.95);
+  border: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--color-primary-dark);
+}
+
+.slider-btn:disabled { opacity: 0.45; cursor: default; }
+
+@media (max-width: 900px) {
+  .slider-track .card { flex: 0 0 calc((100% - var(--slider-gap)) / 2); }
+}
+
+@media (max-width: 600px) {
+  .slider-track .card { flex: 0 0 100%; }
+  .slider-btn { width: 36px; height: 36px; font-size: 18px; }
 }
 
 .card-body h3 {
@@ -811,6 +870,21 @@ html[data-theme='dark'] .feature-item h3 { color: var(--color-secondary); }
   transform: translateY(0);
 }
 
+/* Slider-specific reveal: slide from right/left instead of up */
+.spiritual-slider .reveal {
+  /* override default translateY with horizontal translation */
+  transform: translateX(0);
+  opacity: 0;
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.spiritual-slider .reveal.slide-from-right { transform: translateX(36px); }
+.spiritual-slider .reveal.slide-from-left { transform: translateX(-36px); }
+.spiritual-slider .reveal.slide-from-right.is-visible,
+.spiritual-slider .reveal.slide-from-left.is-visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
 .card-grid .reveal:nth-child(2) { transition-delay: 0.08s; }
 .card-grid .reveal:nth-child(3) { transition-delay: 0.16s; }
 .card-grid .reveal:nth-child(4) { transition-delay: 0.24s; }
@@ -878,4 +952,99 @@ html[data-theme='dark'] .feature-item h3 { color: var(--color-secondary); }
   .gallery-item.span-2 { grid-column: span 2; }
   .hero-actions { flex-direction: column; width: 100%; }
   .hero-actions .btn { width: 100%; justify-content: center; }
+}
+/* ==========================================================================
+   14. Bổ sung: liên kết ảnh trong card + trang chi tiết địa điểm tâm linh
+   ========================================================================== */
+
+/* Cho phép click vào ảnh trong card để đi đến trang riêng của địa điểm */
+.card-media-link { display: block; }
+
+/* Căn đúng vị trí khi nhảy tới section bằng liên kết dạng
+   "index.html#id" từ trang khác (không qua JS offset) */
+.section[id],
+.hero[id] {
+  scroll-margin-top: var(--header-height);
+}
+
+.card-grid .reveal:nth-child(7) { transition-delay: 0.48s; }
+
+/* ---- Banner nhỏ cho trang chi tiết địa điểm ---- */
+.location-hero {
+  position: relative;
+  min-height: 46vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  color: #fff;
+}
+
+.location-hero .hero-media { position: absolute; inset: 0; z-index: 0; }
+.location-hero .hero-img { width: 100%; height: 100%; object-fit: cover; }
+.location-hero .hero-overlay { position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(11,20,32,0.35) 0%, rgba(11,20,32,0.8) 100%);
+}
+
+.location-hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 90px 0 40px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 14px;
+}
+
+.breadcrumb a:hover { text-decoration: underline; }
+
+.location-hero-content .eyebrow { color: #FFE1B0; }
+
+.location-title {
+  font-size: clamp(2rem, 4.6vw, 3.2rem);
+  color: #fff;
+  text-shadow: 0 8px 30px rgba(11, 20, 32, 0.6);
+}
+
+/* ---- Nội dung chi tiết ---- */
+.location-body {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.location-main p { margin-bottom: 18px; color: var(--color-text); line-height: 1.75; }
+.location-main p:last-child { margin-bottom: 0; }
+
+.location-aside {
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: calc(var(--header-height) + 24px);
+}
+
+.location-aside h3 { font-size: 1.05rem; margin-bottom: 16px; }
+
+.location-facts { display: flex; flex-direction: column; gap: 14px; }
+
+.location-fact { display: flex; gap: 12px; align-items: flex-start; }
+.location-fact svg { flex-shrink: 0; margin-top: 3px; color: var(--color-primary); }
+.location-fact strong { display: block; font-size: 0.85rem; color: var(--color-text-muted); font-weight: 500; }
+.location-fact span { font-size: 0.98rem; }
+
+.location-back {
+  margin-top: 28px;
+}
+
+@media (max-width: 900px) {
+  .location-body { grid-template-columns: 1fr; }
+  .location-aside { position: static; }
 }

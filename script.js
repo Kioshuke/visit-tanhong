@@ -1,6 +1,7 @@
 /* ==========================================================================
    Explore Tân Hồng — Main script
    Contents:
+   0. Header/Footer partial loader (dùng chung cho mọi trang)
    1. Utilities
    2. Sticky navbar on scroll
    3. Mobile menu toggle
@@ -24,16 +25,56 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   document.addEventListener('DOMContentLoaded', () => {
-    initStickyHeader();
-    initMobileMenu();
-    initSmoothScroll();
-    initActiveLinkOnScroll();
-    initScrollReveal();
-    initCounters();
-    initThemeToggle();
-    initBackToTop();
-    initFooterYear();
+    loadPartials().finally(() => {
+      initStickyHeader();
+      initMobileMenu();
+      initSmoothScroll();
+      initActiveLinkOnScroll();
+      initScrollReveal();
+      initSpiritualSlider();
+      initCounters();
+      initThemeToggle();
+      initBackToTop();
+      initFooterYear();
+    });
   });
+
+  /* ------------------------------------------------------------------
+     0. Header/Footer partial loader
+     Mọi trang chỉ cần khai báo:
+       <div data-include="header.html"></div>
+       <div data-include="footer.html"></div>
+     Script sẽ tự tải nội dung header.html / footer.html và chèn vào
+     đúng vị trí đó — không cần copy lại code header/footer khi tạo
+     trang mới. Các init bên dưới đều chạy SAU khi partial đã được
+     chèn xong, để đảm bảo các phần tử như #siteHeader, #themeToggle,
+     #backToTop... đã tồn tại trong DOM.
+  ------------------------------------------------------------------ */
+  function loadPartials() {
+    const includeNodes = $$('[data-include]');
+    if (!includeNodes.length) return Promise.resolve();
+
+    const requests = includeNodes.map((node) => {
+      const file = node.getAttribute('data-include');
+      return fetch(file)
+        .then((res) => {
+          if (!res.ok) throw new Error(`Không thể tải ${file} (HTTP ${res.status})`);
+          return res.text();
+        })
+        .then((html) => {
+          node.outerHTML = html;
+        })
+        .catch((err) => {
+          // Nếu đang mở file trực tiếp bằng file:// (không qua server),
+          // trình duyệt sẽ chặn fetch() vì lý do CORS. Header/footer sẽ
+          // hiện trống — hãy chạy site qua một local server (vd: VS Code
+          // "Live Server", hoặc `python3 -m http.server`) để fetch hoạt động.
+          console.error(err);
+        });
+    });
+
+    return Promise.all(requests);
+  }
 
   /* ------------------------------------------------------------------
      2. Sticky navbar on scroll
@@ -104,13 +145,22 @@
   function initSmoothScroll() {
     const header = $('#siteHeader');
     const headerOffset = () => (header ? header.offsetHeight : 0);
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
     $$('a[data-scroll], .nav-link').forEach((link) => {
       link.addEventListener('click', (event) => {
         const href = link.getAttribute('href');
-        if (!href || !href.startsWith('#')) return;
+        if (!href || href.indexOf('#') === -1) return;
 
-        const target = $(href);
+        // Hỗ trợ cả href="#id" (cùng trang) và href="page.html#id"
+        // (dùng chung trong header/footer cho mọi trang). Nếu phần
+        // "page.html" khác trang hiện tại, để trình duyệt điều hướng
+        // bình thường sang trang đó rồi tự cuộn tới id.
+        const [page, id] = href.split('#');
+        const linkedPage = page || currentPage;
+        if (linkedPage !== currentPage) return;
+
+        const target = document.getElementById(id);
         if (!target) return;
 
         event.preventDefault();
@@ -138,26 +188,34 @@
     const navLinks = $$('.nav-link');
     if (!navLinks.length) return;
 
-    const sections = navLinks
-      .map((link) => document.querySelector(link.getAttribute('href')))
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+    const linkTargets = navLinks
+      .map((link) => {
+        const href = link.getAttribute('href') || '';
+        const [page, id] = href.split('#');
+        if (!id || (page && page !== currentPage)) return null;
+        const section = document.getElementById(id);
+        return section ? { link, section } : null;
+      })
       .filter(Boolean);
 
-    if (!sections.length) return;
+    if (!linkTargets.length) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          const id = `#${entry.target.id}`;
-          navLinks.forEach((link) => {
-            link.classList.toggle('active-link', link.getAttribute('href') === id);
-          });
+          navLinks.forEach((link) => link.classList.remove('active-link'));
+          linkTargets
+            .filter((item) => item.section === entry.target)
+            .forEach((item) => item.link.classList.add('active-link'));
         });
       },
       { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
     );
 
-    sections.forEach((section) => observer.observe(section));
+    linkTargets.forEach(({ section }) => observer.observe(section));
   }
 
   /* ------------------------------------------------------------------
@@ -188,6 +246,66 @@
     );
 
     revealItems.forEach((el) => observer.observe(el));
+  }
+
+  /* ------------------------------------------------------------------
+     Spiritual section slider (3-up carousel)
+  ------------------------------------------------------------------ */
+  function initSpiritualSlider() {
+    const slider = document.querySelector('.spiritual-slider');
+    if (!slider) return;
+
+    const viewport = slider.querySelector('.slider-viewport');
+    const track = slider.querySelector('.slider-track');
+    const slides = Array.from(track.querySelectorAll('.card'));
+    const prev = slider.querySelector('.slider-btn.prev');
+    const next = slider.querySelector('.slider-btn.next');
+    if (!viewport || !track || !slides.length || !prev || !next) return;
+
+    const gap = parseInt(getComputedStyle(track).gap) || 28;
+    let index = 0;
+    let lastDirection = 'right';
+
+    function getVisibleCount() {
+      const w = viewport.offsetWidth;
+      if (w < 600) return 1;
+      if (w < 900) return 2;
+      return 3;
+    }
+
+    function update() {
+      const visible = getVisibleCount();
+      const slideWidth = slides[0].offsetWidth;
+      const step = Math.round(slideWidth + gap);
+      const maxIndex = Math.max(0, slides.length - visible);
+      index = Math.min(Math.max(0, index), maxIndex);
+      const translateX = -(index * step);
+      track.style.transform = `translateX(${translateX}px)`;
+      prev.disabled = index === 0;
+      next.disabled = index === maxIndex;
+      // manage slide-in direction classes for visible slides
+      const start = index;
+      const end = index + visible - 1;
+      slides.forEach((sl, i) => {
+        if (i >= start && i <= end) {
+          sl.classList.remove('slide-from-left', 'slide-from-right');
+          sl.classList.add(lastDirection === 'right' ? 'slide-from-right' : 'slide-from-left');
+          // force reflow before adding visible so transition runs
+          void sl.offsetWidth;
+          sl.classList.add('is-visible');
+        } else {
+          sl.classList.remove('is-visible');
+          sl.classList.remove('slide-from-left', 'slide-from-right');
+        }
+      });
+    }
+
+    next.addEventListener('click', () => { lastDirection = 'right'; index += 1; update(); });
+    prev.addEventListener('click', () => { lastDirection = 'left'; index -= 1; update(); });
+
+    window.addEventListener('resize', () => { requestAnimationFrame(update); });
+    window.addEventListener('load', update);
+    setTimeout(update, 60);
   }
 
   /* ------------------------------------------------------------------
@@ -258,10 +376,9 @@
       toggle.setAttribute('aria-pressed', String(theme === 'dark'));
     };
 
-    // Respect saved preference, otherwise fall back to system preference
+    // Respect a saved preference, otherwise default to the light theme
     const saved = localStorage.getItem(STORAGE_KEY);
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(saved || (systemPrefersDark ? 'dark' : 'light'));
+    applyTheme(saved ?? 'light');
 
     toggle.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';

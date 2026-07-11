@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>404 - Không tìm thấy trang | Explore Tân Hồng</title>
+
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Be Vietnam Pro',sans-serif;
+    background:linear-gradient(135deg,#E8F8F5,#FDFEFE);
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:#1f2937;
+    padding:30px;
+}
+
+.container{
+
+    width:100%;
+    max-width:900px;
+
+    background:#fff;
+    border-radius:25px;
+
+    padding:60px;
+
+    text-align:center;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+}
+
+.compass{
+
+    font-size:80px;
+    animation:float 3s ease-in-out infinite;
+
+}
+
+@keyframes float{
+
+    50%{
+
+        transform:translateY(-10px);
+
+    }
+
+}
+
+.error{
+
+    font-size:120px;
+    font-weight:700;
+    color:#0F766E;
+
+    margin-top:10px;
+}
+
+.title{
+
+    font-size:36px;
+    margin-top:10px;
+}
+
+.subtitle{
+
+    margin:25px auto;
+
+    max-width:620px;
+
+    color:#6b7280;
+
+    line-height:1.8;
+    font-size:18px;
+
+}
+
+.quote{
+
+    font-style:italic;
+    color:#0F766E;
+
+    margin-bottom:40px;
+}
+
+.buttons{
+
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+
+}
+
+.btn{
+
+    padding:15px 28px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.home{
+
+    background:#0F766E;
+    color:white;
+
+}
+
+.home:hover{
+
+    background:#0d5d57;
+    transform:translateY(-3px);
+
+}
+
+.place{
+
+    background:#ECFDF5;
+    color:#0F766E;
+    border:2px solid #0F766E;
+
+}
+
+.place:hover{
+
+    background:#D1FAE5;
+    transform:translateY(-3px);
+
+}
+
+.cards{
+
+    margin-top:60px;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+    gap:20px;
+
+}
+
+.card{
+
+    background:#F9FAFB;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    text-decoration:none;
+
+    color:#374151;
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+    background:white;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+
+}
+
+.card span{
+
+    font-size:42px;
+
+}
+
+.card h3{
+
+    margin-top:15px;
+    margin-bottom:10px;
+
+    font-size:18px;
+
+}
+
+.card p{
+
+    font-size:14px;
+    color:#6b7280;
+    line-height:1.6;
+
+}
+
+.footer{
+
+    margin-top:50px;
+    color:#9ca3af;
+    font-size:14px;
+
+}
+
+@media(max-width:768px){
+
+.container{
+
+padding:40px 25px;
+
+}
+
+.error{
+
+font-size:90px;
+
+}
+
+.title{
+
+font-size:28px;
+
+}
+
+.subtitle{
+
+font-size:16px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="compass">
+🧭
+</div>
+
+<div class="error">
+404
+</div>
+
+<h1 class="title">
+Ôi! Có vẻ bạn đã đi lạc...
+</h1>
+
+<p class="subtitle">
+Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.
+Đừng lo, vẫn còn rất nhiều điểm đến thú vị đang chờ bạn khám phá.
+</p>
+
+<div class="quote">
+"Bản đồ này chưa dẫn tới điểm đến bạn mong muốn."
+</div>
+
+<div class="buttons">
+
+<a href="/" class="btn home">
+🏠 Trang chủ
+</a>
+
+<a href="/dia-diem/" class="btn place">
+📍 Khám phá địa điểm
+</a>
+
+</div>
+
+<div class="cards">
+
+<a href="/dia-diem/chua-phuoc-thien/" class="card">
+
+<span>🛕</span>
+
+<h3>Chùa Phước Thiện</h3>
+
+<p>
+Điểm đến tâm linh nổi tiếng của huyện Tân Hồng.
+</p>
+
+</a>
+
+<a href="/dia-diem/go-quang-cung/" class="card">
+
+<span>🌿</span>
+
+<h3>Gò Quảng Cung</h3>
+
+<p>
+Không gian thiên nhiên yên bình và trong lành.
+</p>
+
+</a>
+
+<a href="/am-thuc/" class="card">
+
+<span>🍜</span>
+
+<h3>Ẩm thực</h3>
+
+<p>
+Khám phá những món ăn đặc sản địa phương.
+</p>
+
+</a>
+
+<a href="/tin-tuc/" class="card">
+
+<span>📰</span>
+
+<h3>Tin tức</h3>
+
+<p>
+Thông tin mới nhất về du lịch và sự kiện.
+</p>
+
+</a>
+
+</div>
+
+<div class="footer">
+
+© 2026 Explore Tân Hồng • Khám phá vẻ đẹp vùng đất biên giới.
+
+</div>
+
+</div>
+
+</body>
+</html>
