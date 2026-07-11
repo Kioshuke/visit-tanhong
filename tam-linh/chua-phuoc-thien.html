@@ -6,13 +6,13 @@
 
   <!-- ===== SEO ===== -->
   <title>Chùa Phước Thiện | Explore Tân Hồng</title>
-  <meta name="description" content="Chùa Phước Thiện là một trong những cơ sở Phật giáo gắn bó lâu đời với đời sống tinh thần của người dân huyện Tân Hồng, tỉnh Đồng Tháp." />
+  <meta name="description" content="Chùa Phước Thiện — di tích lịch sử, văn hóa cấp tỉnh Đồng Tháp, gắn liền với Hòa thượng Trần Liên, vị cao tăng yêu nước có nhiều đóng góp cho sự nghiệp kháng chiến." />
   <meta name="robots" content="index, follow" />
 
   <!-- ===== Open Graph ===== -->
   <meta property="og:type" content="article" />
   <meta property="og:title" content="Chùa Phước Thiện | Explore Tân Hồng" />
-  <meta property="og:description" content="Chùa Phước Thiện là một trong những cơ sở Phật giáo gắn bó lâu đời với đời sống tinh thần của người dân huyện Tân Hồng, tỉnh Đồng Tháp." />
+  <meta property="og:description" content="Chùa Phước Thiện — di tích lịch sử, văn hóa cấp tỉnh Đồng Tháp, gắn liền với Hòa thượng Trần Liên, vị cao tăng yêu nước có nhiều đóng góp cho sự nghiệp kháng chiến." />
   <meta property="og:image" content="../assets/images/chua-phuoc-thien.jpg" />
   <meta property="og:locale" content="vi_VN" />
   <meta property="og:site_name" content="Explore Tân Hồng" />
@@ -26,8 +26,430 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="../style.css" />
+
+  <!-- ===== Bổ sung style riêng cho bài viết chi tiết (danh sách, khối trích nguồn) ===== -->
+  <style>
+    .location-main h2,
+    .location-main h3 {
+      font-family: 'Fraunces', serif;
+      color: var(--color-primary);
+      line-height: 1.3;
+    }
+    .location-main h2 { font-size: 1.5rem; margin: 36px 0 14px; }
+    .location-main h3 { font-size: 1.2rem; margin: 30px 0 12px; }
+    .location-main h2:first-child,
+    .location-main h3:first-child { margin-top: 0; }
+
+    .location-main ul.prose-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0 0 20px;
+    }
+    .location-main ul.prose-list li {
+      position: relative;
+      padding-left: 22px;
+      line-height: 1.75;
+      color: var(--color-text);
+    }
+    .location-main ul.prose-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-secondary);
+    }
+
+    .location-source {
+      background: var(--color-bg);
+      border-left: 3px solid var(--color-accent);
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      color: var(--color-text-muted);
+      margin: 4px 0 22px;
+    }
+
+    .location-tag {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      background: rgba(15, 118, 110, 0.1);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      margin-bottom: 14px;
+    }
+
+    /* ==================================================
+       1. READING PROGRESS BAR
+       ================================================== */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      z-index: 999;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+      transition: width 0.12s linear;
+    }
+
+    /* ẩn nút back-to-top mặc định của footer dùng chung trên trang này,
+       vì đã có nút "Lên đầu trang" trong nhóm Floating Action Button */
+    #backToTop { display: none !important; }
+
+    /* ==================================================
+       2. GOOGLE MAP CARD (trong sidebar, dưới "Thông tin nhanh")
+       ================================================== */
+    .map-card {
+      margin-top: 22px;
+      background: var(--color-card);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .map-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .map-card h3 { font-size: 1.05rem; margin-bottom: 14px; }
+    .map-embed {
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      margin-bottom: 16px;
+      background: var(--color-bg);
+      width: 100%;
+      min-height: 200px;
+    }
+    .location-fact--map .map-embed {
+      width: 100%;
+      margin-left: 0;
+    }
+    .map-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .map-actions { display: flex; flex-direction: column; gap: 10px; }
+    .map-actions .btn { width: 100%; }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--color-primary);
+      color: var(--color-primary);
+      font-weight: 600;
+      font-size: 0.92rem;
+      background: transparent;
+      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    }
+    .btn-outline:hover { background: var(--color-primary); color: #fff; transform: translateY(-2px); }
+    .copy-feedback {
+      font-size: 0.8rem;
+      color: var(--color-secondary);
+      text-align: center;
+      margin-top: 8px;
+      opacity: 0;
+      height: 0;
+      transition: opacity 0.3s var(--ease);
+    }
+    .copy-feedback.is-visible { opacity: 1; height: auto; }
+
+    /* ==================================================
+       3. TIMELINE
+       ================================================== */
+    .timeline {
+      position: relative;
+      margin: 12px 0 40px;
+      padding-left: 30px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: var(--color-border);
+    }
+    .timeline-item { position: relative; padding-bottom: 28px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: -30px;
+      top: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--color-card);
+      border: 3px solid var(--color-primary);
+      box-shadow: 0 0 0 4px var(--color-bg);
+    }
+    .timeline-year {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      color: var(--color-primary);
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .timeline-text { color: var(--color-text); line-height: 1.6; }
+
+    /* ==================================================
+       5. QUOTE
+       ================================================== */
+    .quote-section {
+      background: var(--color-bg);
+      border-radius: var(--radius-lg);
+      padding: 48px 32px;
+      text-align: center;
+      margin: 8px 0 40px;
+    }
+    .quote-icon { color: var(--color-accent); opacity: 0.55; margin-bottom: 14px; }
+    .quote-text {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.6vw, 1.85rem);
+      line-height: 1.65;
+      color: var(--color-primary);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ==================================================
+       6. THỐNG KÊ
+       ================================================== */
+    .stats-section { margin: 8px 0 44px; }
+    .stats-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      text-align: center;
+      color: var(--color-primary);
+      margin-bottom: 24px;
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .stat-card {
+      background: var(--color-card);
+      border-radius: var(--radius-lg);
+      padding: 26px 14px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .stat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+    .stat-card .stat-number {
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 6px;
+    }
+    .stat-card .stat-label { font-size: 0.85rem; color: var(--color-text-muted); }
+
+    .reveal-zoom { opacity: 0; transform: scale(0.85); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+    .reveal-zoom.is-visible { opacity: 1; transform: scale(1); }
+
+    .stats-grid .reveal:nth-child(2) { transition-delay: 0.08s; }
+    .stats-grid .reveal:nth-child(3) { transition-delay: 0.16s; }
+    .stats-grid .reveal:nth-child(4) { transition-delay: 0.24s; }
+
+    @media (max-width: 720px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* ==================================================
+       7. ACCORDION
+       ================================================== */
+    .accordion { display: flex; flex-direction: column; gap: 14px; margin: 12px 0 40px; }
+    .accordion-item {
+      background: var(--color-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .accordion-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px 22px;
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      text-align: left;
+      background: transparent;
+    }
+    .accordion-icon { flex-shrink: 0; display: inline-flex; transition: transform var(--transition-fast); }
+    .accordion-item.is-open .accordion-icon { transform: rotate(180deg); }
+    .accordion-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s var(--ease);
+    }
+    .accordion-item.is-open .accordion-panel { grid-template-rows: 1fr; }
+    .accordion-panel-inner { overflow: hidden; }
+    .accordion-panel-content { padding: 0 22px 24px; }
+    .accordion-panel-content p { margin-bottom: 14px; }
+    .accordion-panel-content p:last-child { margin-bottom: 0; }
+
+    /* ==================================================
+       4. HIỆN VẬT — Horizontal Card Slider
+       ================================================== */
+    .artifact-slider-wrap { position: relative; }
+    .artifact-slider {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 4px 4px 16px;
+      cursor: grab;
+      -webkit-overflow-scrolling: touch;
+    }
+    .artifact-slider.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+    .artifact-slider::-webkit-scrollbar { height: 6px; }
+    .artifact-slider::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 999px; }
+    .artifact-card {
+      flex: 0 0 200px;
+      scroll-snap-align: start;
+      background: var(--color-bg);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+      user-select: none;
+    }
+    .artifact-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+    .artifact-card-media { aspect-ratio: 4 / 3; overflow: hidden; }
+    .artifact-card-media img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .artifact-card-body { padding: 14px 16px 18px; }
+    .artifact-card-body h4 { font-size: 0.96rem; margin-bottom: 4px; color: var(--color-text); }
+    .artifact-card-body p { font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.5; }
+    .artifact-nav { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+    .artifact-nav-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--color-card);
+      color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+    }
+    .artifact-nav-btn:hover { background: var(--color-primary); color: #fff; transform: translateY(-2px); }
+
+    /* ==================================================
+       8. ĐỊA ĐIỂM LIÊN QUAN
+       ================================================== */
+    .related-section { margin: 8px 0 44px; }
+    .related-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      color: var(--color-primary);
+      margin-bottom: 22px;
+      text-align: center;
+    }
+    .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .related-card {
+      display: block;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .related-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+    .related-media { aspect-ratio: 4 / 3; overflow: hidden; }
+    .related-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+    .related-card:hover .related-media img { transform: scale(1.1); }
+    .related-body { padding: 16px 18px 20px; background: var(--color-card); }
+    .related-body h4 { font-size: 1rem; margin-bottom: 6px; color: var(--color-text); }
+    .related-body p { font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 12px; line-height: 1.5; }
+    .related-link { font-size: 0.85rem; font-weight: 600; color: var(--color-primary); display: inline-flex; align-items: center; gap: 4px; }
+
+    .related-grid .reveal:nth-child(2) { transition-delay: 0.08s; }
+    .related-grid .reveal:nth-child(3) { transition-delay: 0.16s; }
+    .related-grid .reveal:nth-child(4) { transition-delay: 0.24s; }
+
+    @media (max-width: 900px) { .related-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .related-grid { grid-template-columns: 1fr; } }
+
+    /* ==================================================
+       9. SHARE
+       ================================================== */
+    .share-section {
+      background: var(--color-bg);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-align: center;
+      margin: 8px 0 44px;
+    }
+    .share-title { font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--color-primary); margin-bottom: 18px; }
+    .share-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      background: var(--color-card);
+      color: var(--color-text);
+      font-weight: 600;
+      font-size: 0.88rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+    }
+    .share-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .share-btn.facebook:hover { background: #1877F2; color: #fff; }
+    .share-btn.messenger:hover { background: #0084FF; color: #fff; }
+    .share-btn.zalo:hover { background: #0068FF; color: #fff; }
+    .share-btn.copy:hover, .share-btn.native:hover { background: var(--color-primary); color: #fff; }
+    .share-btn[hidden] { display: none; }
+
+    /* ==================================================
+       2. FLOATING ACTION BUTTON
+       ================================================== */
+    .fab-group {
+      position: fixed;
+      right: 24px;
+      bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 500;
+      opacity: 0;
+      transform: scale(0.7);
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .fab-group.is-visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+    .fab-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition-fast), background var(--transition-fast);
+    }
+    .fab-btn:hover { transform: translateY(-4px) scale(1.06); background: var(--color-secondary); }
+
+    @media (max-width: 640px) {
+      .fab-group { right: 16px; bottom: 16px; }
+      .fab-btn { width: 44px; height: 44px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- ============ READING PROGRESS BAR ============ -->
+  <div class="reading-progress" id="readingProgress"></div>
 
   <!-- ============ HEADER / NAVIGATION (dùng chung — xem header.html) ============ -->
   <div data-include="../header.html"></div>
@@ -48,7 +470,7 @@
           <span aria-hidden="true">/</span>
           <span aria-current="page">Chùa Phước Thiện</span>
         </p>
-        <p class="eyebrow reveal">Chùa · Phật giáo</p>
+        <p class="eyebrow reveal">Di tích lịch sử - văn hóa cấp tỉnh Đồng Tháp</p>
         <h1 class="location-title reveal">Chùa Phước Thiện</h1>
       </div>
     </section>
@@ -60,9 +482,304 @@
 
         <div class="location-body">
           <div class="location-main reveal">
-            <p>Chùa Phước Thiện là điểm sinh hoạt tín ngưỡng quen thuộc của phật tử trong vùng, nơi diễn ra các khoá lễ, ngày rằm và các dịp lễ lớn trong năm theo truyền thống Phật giáo.</p>
-            <p>Không gian chùa mang nét thanh tịnh, mộc mạc, phù hợp cho du khách và người dân địa phương đến chiêm bái, tìm sự an yên trong tâm hồn giữa nhịp sống vùng biên giới Đồng Tháp Mười.</p>
-            <p><em>Nội dung giới thiệu chi tiết hơn (lịch sử hình thành, kiến trúc, hoạt động lễ hội...) và hình ảnh thật của Chùa Phước Thiện có thể được cập nhật bổ sung tại đây.</em></p>
+            <span class="location-tag">Di tích lịch sử gắn liền với Hòa thượng Trần Liên</span>
+
+            <p>Chùa Phước Thiện là một trong những ngôi chùa có giá trị lịch sử và văn hóa tiêu biểu của huyện Tân Hồng, tỉnh Đồng Tháp. Không chỉ là nơi sinh hoạt tín ngưỡng của người dân địa phương, ngôi chùa còn gắn liền với cuộc đời và sự nghiệp của Hòa thượng Trần Liên (tên thật Trần Văn Liên) — một vị cao tăng yêu nước, người đã dành trọn cuộc đời cho đạo pháp, nhân dân và sự nghiệp đấu tranh giải phóng dân tộc.</p>
+
+            <p>Ngày nay, Chùa Phước Thiện vừa là điểm đến tâm linh, vừa là nơi lưu giữ nhiều hiện vật quý về cuộc đời của Hòa thượng Trần Liên, đồng thời là địa chỉ giáo dục truyền thống lịch sử cho các thế hệ mai sau.</p>
+
+            <h2>Hòa thượng Trần Liên — Người sáng lập Chùa Phước Thiện</h2>
+            <p>Hòa thượng Trần Liên (tên thật Trần Văn Liên, thường gọi Xã Vụ) sinh năm 1822 tại làng Thành Hiếu (nay thuộc xã Phổ Vinh, thị xã Đức Phổ, tỉnh Quảng Ngãi) trong một gia đình Nho học.</p>
+            <p>Năm 1869, sau khi hưởng ứng phong trào khởi nghĩa chống thực dân Pháp, ông rời quê hương vào Nam. Sau khi quy y cửa Phật, Hòa thượng đã dành phần lớn cuộc đời để khai sơn, xây dựng chùa tại nhiều vùng đất còn hoang sơ, góp phần phát triển Phật giáo và giúp đỡ người dân ổn định cuộc sống.</p>
+            <p>Trong suốt quá trình hành đạo, Hòa thượng Trần Liên đã sáng lập 16 ngôi chùa tại khu vực Nam Bộ. Chùa Phước Thiện là ngôi chùa thứ 14, được thành lập vào năm 1942 và trở thành nơi gắn bó với những năm tháng cuối đời của ngài.</p>
+
+            <!-- ============ TIMELINE — Dấu mốc cuộc đời Hòa thượng Trần Liên ============ -->
+            <div class="timeline">
+              <div class="timeline-item reveal">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <p class="timeline-year">1822</p>
+                <p class="timeline-text">Sinh tại Quảng Ngãi.</p>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <p class="timeline-year">1869</p>
+                <p class="timeline-text">Xuất gia.</p>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <p class="timeline-year">1889</p>
+                <p class="timeline-text">Thành lập ngôi chùa đầu tiên.</p>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <p class="timeline-year">1942</p>
+                <p class="timeline-text">Thành lập Chùa Phước Thiện.</p>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <p class="timeline-year">1950</p>
+                <p class="timeline-text">Được kết nạp Đảng.</p>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <p class="timeline-year">1952</p>
+                <p class="timeline-text">Chùa bị thực dân Pháp đốt phá.</p>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <p class="timeline-year">1969</p>
+                <p class="timeline-text">Viên tịch tại Chùa Phước Thiện.</p>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-dot" aria-hidden="true"></span>
+                <p class="timeline-year">2008</p>
+                <p class="timeline-text">Được công nhận Di tích lịch sử - văn hóa cấp tỉnh Đồng Tháp.</p>
+              </div>
+            </div>
+
+            <!-- ============ QUOTE ============ -->
+            <div class="quote-section reveal">
+              <svg class="quote-icon" width="34" height="34" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 6C4.9 6 3 7.9 3 10.2c0 2 1.4 3.7 3.3 4.1-.2 1.3-1 2.3-2.2 2.9l-.4.2.5 1.6.5-.1c2.9-.8 4.8-3.2 4.8-6.7V10.2C9.5 7.9 9.5 6 7.2 6Zm10 0c-2.3 0-4.2 1.9-4.2 4.2 0 2 1.4 3.7 3.3 4.1-.2 1.3-1 2.3-2.2 2.9l-.4.2.5 1.6.5-.1c2.9-.8 4.8-3.2 4.8-6.7V10.2c0-2.3-.1-4.2-2.3-4.2Z"/></svg>
+              <p class="quote-text">Một đời vì đạo.<br />Một đời vì dân.<br />Một đời phụng sự Tổ quốc.</p>
+            </div>
+
+            <!-- ============ ACCORDION — Các phần nội dung chi tiết ============ -->
+            <div class="accordion">
+
+              <!-- ---- 1. Vai trò trong kháng chiến ---- -->
+              <div class="accordion-item is-open">
+                <button class="accordion-trigger" type="button" aria-expanded="true">
+                  <span>Vai trò trong kháng chiến</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="accordion-panel">
+                  <div class="accordion-panel-inner">
+                    <div class="accordion-panel-content">
+                      <p>Không chỉ là một vị tu hành, Hòa thượng Trần Liên còn là người có tinh thần yêu nước sâu sắc.</p>
+                      <p>Trong thời kỳ kháng chiến chống thực dân Pháp, Chùa Phước Thiện trở thành cơ sở nuôi giấu cán bộ, du kích và là nơi cung cấp lương thực, nơi trú ẩn an toàn cho lực lượng cách mạng. Hòa thượng cũng nhiều lần vận động tăng ni, Phật tử tham gia ủng hộ kháng chiến, cứu trợ người dân trong những năm xảy ra thiên tai, mất mùa.</p>
+                      <p>Cuối năm 1950, Hòa thượng Trần Liên được kết nạp vào Đảng Cộng sản Việt Nam.</p>
+                      <p>Năm 1952, thực dân Pháp tiến hành càn quét và đốt phá Chùa Phước Thiện. Sau đó, ngôi chùa được người dân và Phật tử chung tay dựng lại, tiếp tục là nơi sinh hoạt tín ngưỡng và hoạt động cách mạng.</p>
+                      <p>Sau Hiệp định Genève năm 1954, trước tình hình chiến sự phức tạp, Hòa thượng chuyển về Long Hải (Bà Rịa – Vũng Tàu) tiếp tục hoạt động cho đến những năm cuối đời.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ---- 2. Hiện vật — Horizontal Card Slider ---- -->
+              <div class="accordion-item">
+                <button class="accordion-trigger" type="button" aria-expanded="false">
+                  <span>Những hiện vật còn được lưu giữ</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="accordion-panel">
+                  <div class="accordion-panel-inner">
+                    <div class="accordion-panel-content">
+                      <p>Một trong những giá trị đặc biệt của Chùa Phước Thiện là vẫn còn lưu giữ nhiều hiện vật gắn liền với cuộc sống giản dị của Hòa thượng Trần Liên. Kéo hoặc dùng nút mũi tên để xem toàn bộ hiện vật:</p>
+
+                      <div class="artifact-slider-wrap">
+                        <div class="artifact-slider" id="artifactSlider">
+                          <div class="artifact-card">
+                            <div class="artifact-card-media"><img loading="lazy" src="../assets/images/artifacts/gau-nuoc.jpg" alt="Cặp gàu" /></div>
+                            <div class="artifact-card-body"><h4>Cặp gàu</h4><p>Dùng để gánh nước phục vụ sinh hoạt hằng ngày.</p></div>
+                          </div>
+                          <div class="artifact-card">
+                            <div class="artifact-card-media"><img loading="lazy" src="../assets/images/artifacts/gui-may.jpg" alt="Gùi mây" /></div>
+                            <div class="artifact-card-body"><h4>Gùi mây</h4><p>Gùi đan bằng mây, dùng khi đi rừng.</p></div>
+                          </div>
+                          <div class="artifact-card">
+                            <div class="artifact-card-media"><img loading="lazy" src="../assets/images/artifacts/coi-gia-gao.jpg" alt="Cối giã gạo" /></div>
+                            <div class="artifact-card-body"><h4>Cối giã gạo</h4><p>Phục vụ sinh hoạt thường ngày của chùa.</p></div>
+                          </div>
+                          <div class="artifact-card">
+                            <div class="artifact-card-media"><img loading="lazy" src="../assets/images/artifacts/vong-hoa-thuong.jpg" alt="Chiếc võng của Hòa thượng" /></div>
+                            <div class="artifact-card-body"><h4>Võng của Hòa thượng</h4><p>Do các đệ tử tự tay đóng để Hòa thượng nghỉ ngơi lúc tuổi già.</p></div>
+                          </div>
+                          <div class="artifact-card">
+                            <div class="artifact-card-media"><img loading="lazy" src="../assets/images/artifacts/gao-dua.jpg" alt="Gáo dừa" /></div>
+                            <div class="artifact-card-body"><h4>Gáo dừa</h4><p>Vật dụng sinh hoạt thường ngày trong chùa.</p></div>
+                          </div>
+                          <div class="artifact-card">
+                            <div class="artifact-card-media"><img loading="lazy" src="../assets/images/artifacts/binh-tich-tra.jpg" alt="Bình tích uống trà" /></div>
+                            <div class="artifact-card-body"><h4>Bình tích uống trà</h4><p>Dùng để pha trà tiếp khách và Phật tử.</p></div>
+                          </div>
+                          <div class="artifact-card">
+                            <div class="artifact-card-media"><img loading="lazy" src="../assets/images/artifacts/moc-ban.jpg" alt="Mộc bản" /></div>
+                            <div class="artifact-card-body"><h4>Mộc bản</h4><p>In hình các vị bề trên, phục vụ nghi lễ Phật giáo.</p></div>
+                          </div>
+                          <div class="artifact-card">
+                            <div class="artifact-card-media"><img loading="lazy" src="../assets/images/artifacts/huan-chuong.jpg" alt="Huân chương" /></div>
+                            <div class="artifact-card-body"><h4>Huân chương</h4><p>Bằng khen, huân chương ghi nhận đóng góp cho sự nghiệp giải phóng dân tộc.</p></div>
+                          </div>
+                        </div>
+                        <div class="artifact-nav">
+                          <button class="artifact-nav-btn" id="artifactPrev" type="button" aria-label="Hiện vật trước">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+                          </button>
+                          <button class="artifact-nav-btn" id="artifactNext" type="button" aria-label="Hiện vật tiếp theo">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                          </button>
+                        </div>
+                      </div>
+
+                      <p>Những hiện vật này giúp tái hiện phần nào cuộc sống thanh bần, giản dị nhưng đầy ý nghĩa của một vị cao tăng suốt đời vì đạo và vì dân.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ---- 3. Mộ Hòa thượng Trần Liên ---- -->
+              <div class="accordion-item">
+                <button class="accordion-trigger" type="button" aria-expanded="false">
+                  <span>Mộ Hòa thượng Trần Liên</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="accordion-panel">
+                  <div class="accordion-panel-inner">
+                    <div class="accordion-panel-content">
+                      <p>Trong khuôn viên Chùa Phước Thiện hiện vẫn còn khu mộ của Hòa thượng Trần Liên.</p>
+                      <p>Sau khi viên tịch vào ngày 06/03/1969 (nhằm ngày 15 tháng Giêng năm Kỷ Dậu), Hòa thượng được an táng tại chính ngôi chùa do mình sáng lập và gắn bó trong những năm cuối đời.</p>
+                      <p class="location-source">Theo tư liệu hiện được lưu giữ tại Chùa Phước Thiện, Hòa thượng Trần Liên sinh năm 1822, viên tịch năm 1969, hưởng thọ 147 tuổi.</p>
+                      <p>Ngày nay, khu mộ là nơi để người dân, Phật tử và du khách đến dâng hương, tưởng niệm, bày tỏ lòng biết ơn đối với những cống hiến của Hòa thượng cho Phật giáo và đất nước.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ---- 4. Những ghi nhận của Nhà nước ---- -->
+              <div class="accordion-item">
+                <button class="accordion-trigger" type="button" aria-expanded="false">
+                  <span>Những ghi nhận của Nhà nước</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="accordion-panel">
+                  <div class="accordion-panel-inner">
+                    <div class="accordion-panel-content">
+                      <p>Với những đóng góp to lớn trong sự nghiệp kháng chiến và hoạt động xã hội, Hòa thượng Trần Liên đã được Nhà nước truy tặng nhiều phần thưởng cao quý, trong đó có:</p>
+                      <ul class="prose-list">
+                        <li>Huân chương Kháng chiến hạng Ba.</li>
+                        <li>Huy chương Kháng chiến chống Mỹ hạng Nhất.</li>
+                        <li>Nhiều bằng khen, giấy chứng nhận của các cấp, các ngành.</li>
+                      </ul>
+                      <p>Đặc biệt, năm 2008, Chùa Phước Thiện được công nhận là Di tích lịch sử - văn hóa cấp tỉnh Đồng Tháp, góp phần bảo tồn những giá trị lịch sử, văn hóa và truyền thống yêu nước của địa phương.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ---- 5. Giá trị ngày nay ---- -->
+              <div class="accordion-item">
+                <button class="accordion-trigger" type="button" aria-expanded="false">
+                  <span>Giá trị ngày nay</span>
+                  <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="accordion-panel">
+                  <div class="accordion-panel-inner">
+                    <div class="accordion-panel-content">
+                      <p>Ngày nay, Chùa Phước Thiện không chỉ là điểm đến dành cho những người tìm kiếm sự thanh tịnh, mà còn là một "bảo tàng thu nhỏ" lưu giữ những ký ức về cuộc đời Hòa thượng Trần Liên và lịch sử đấu tranh cách mạng của vùng biên giới Tân Hồng.</p>
+                      <p>Đến với Chùa Phước Thiện, du khách không chỉ được chiêm bái, vãn cảnh mà còn có cơ hội tìm hiểu về một vị cao tăng đã dành trọn cuộc đời cho đạo pháp, lòng yêu nước và tinh thần phụng sự cộng đồng.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- ============ THỐNG KÊ — Những con số nổi bật ============ -->
+            <div class="stats-section">
+              <h2 class="stats-title">Những con số nổi bật về nhà sư Trần Liên</h2>
+              <div class="stats-grid">
+                <div class="stat-card reveal reveal-zoom">
+                  <span class="stat-number" data-target="1822">0</span>
+                  <span class="stat-label">Sinh tại Đức Phổ, Quảng Ngãi</span>
+                </div>
+                <div class="stat-card reveal reveal-zoom">
+                  <span class="stat-number" data-target="1942">0</span>
+                  <span class="stat-label">Thành lập chùa</span>
+                </div>
+                <div class="stat-card reveal reveal-zoom">
+                  <span class="stat-number" data-target="16">0</span>
+                  <span class="stat-label">Ngôi chùa sáng lập</span>
+                </div>
+                <div class="stat-card reveal reveal-zoom">
+                  <span class="stat-number" data-target="147">0</span>
+                  <span class="stat-label">Hưởng thọ</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ ĐỊA ĐIỂM LIÊN QUAN ============ -->
+            <div class="related-section">
+              <h2 class="related-title">Địa điểm liên quan</h2>
+              <div class="related-grid">
+                <a href="chua-lap-phuc.html" class="related-card reveal">
+                  <div class="related-media"><img loading="lazy" src="../assets/images/chua-lap-phuc.jpg" alt="Chùa Lập Phúc" /></div>
+                  <div class="related-body">
+                    <h4>Chùa Lập Phúc</h4>
+                    <p>Chốn thiền môn yên bình, thu hút phật tử gần xa đến chiêm bái.</p>
+                    <span class="related-link">Khám phá
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                  </div>
+                </a>
+                <a href="chua-don-hau.html" class="related-card reveal">
+                  <div class="related-media"><img loading="lazy" src="../assets/images/chua-don-hau.jpg" alt="Chùa Đôn Hậu" /></div>
+                  <div class="related-body">
+                    <h4>Chùa Đôn Hậu</h4>
+                    <p>Ngôi chùa mang nét kiến trúc mộc mạc của vùng nông thôn Nam Bộ.</p>
+                    <span class="related-link">Khám phá
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                  </div>
+                </a>
+                <a href="nha-tho-tan-hong.html" class="related-card reveal">
+                  <div class="related-media"><img loading="lazy" src="../assets/images/nha-tho-tan-hong.jpg" alt="Nhà Thờ Tân Hồng" /></div>
+                  <div class="related-body">
+                    <h4>Nhà Thờ Tân Hồng</h4>
+                    <p>Điểm sinh hoạt đức tin của cộng đồng Công giáo địa phương.</p>
+                    <span class="related-link">Khám phá
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                  </div>
+                </a>
+                <a href="thanh-that-tan-hong.html" class="related-card reveal">
+                  <div class="related-media"><img loading="lazy" src="../assets/images/thanh-that-tan-hong.jpg" alt="Thánh thất Tân Hồng" /></div>
+                  <div class="related-body">
+                    <h4>Thánh thất Tân Hồng</h4>
+                    <p>Nơi sinh hoạt tín ngưỡng Cao Đài mang kiến trúc đặc trưng riêng biệt.</p>
+                    <span class="related-link">Khám phá
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- ============ SHARE — Chia sẻ địa điểm ============ -->
+            <div class="share-section reveal">
+              <h2 class="share-title">Chia sẻ địa điểm</h2>
+              <div class="share-buttons">
+                <a class="share-btn facebook" id="shareFacebook" href="#" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3H13.5V8.4c0-.87.24-1.46 1.5-1.46H16.5V4.32C16.2 4.28 15.2 4.2 14 4.2c-2.4 0-4 1.46-4 4.14V10.5H7.5v3H10V21h3.5Z"/></svg>
+                  Facebook
+                </a>
+                <a class="share-btn messenger" id="shareMessenger" href="#" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.15 2 11.25c0 2.9 1.44 5.49 3.7 7.19V22l3.38-1.86c.9.25 1.87.39 2.92.39 5.52 0 10-4.15 10-9.28C22 6.15 17.52 2 12 2Zm1 12.5-2.55-2.72L5.5 15l5.5-5.83 2.55 2.72L18.5 8.5 13 14.5Z"/></svg>
+                  Messenger
+                </a>
+                <a class="share-btn zalo" id="shareZalo" href="#" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.15 2 11.25c0 2.9 1.44 5.49 3.7 7.19V22l3.38-1.86c.9.25 1.87.39 2.92.39 5.52 0 10-4.15 10-9.28C22 6.15 17.52 2 12 2Z"/></svg>
+                  Zalo
+                </a>
+                <button class="share-btn copy" id="shareCopyBtn" type="button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                  <span id="shareCopyLabel">Copy Link</span>
+                </button>
+                <button class="share-btn native" id="nativeShareBtn" type="button" hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 3.9M15.4 6.6l-6.8 3.9"/></svg>
+                  Chia sẻ nhanh
+                </button>
+              </div>
+            </div>
 
             <div class="location-back">
               <a href="../index.html#spiritual" class="btn btn-primary" data-scroll>
@@ -74,20 +791,46 @@
 
           <aside class="location-aside reveal">
             <h3>Thông tin nhanh</h3>
+
             <div class="location-facts">
-              <div class="location-fact">
+              <div class="location-fact location-fact--copy">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                <span><strong>Vị trí</strong>Huyện Tân Hồng, tỉnh Đồng Tháp</span>
+                <div class="location-fact-content">
+                  <span><strong>Vị trí</strong>WC9J+9J4, ấp Công Tạo, xã Tân Hồng, tỉnh Đồng Tháp</span>
+                  <button class="btn-copy-address" id="copyAddressBtn" type="button" aria-label="Sao chép địa chỉ">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                  </button>
+                </div>
+                <p class="copy-feedback" id="copyFeedback"></p>
               </div>
               <div class="location-fact">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
-                <span><strong>Loại hình</strong>Cơ sở Phật giáo</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20h16M4 11l8-5 8 5v9H4v-9zM12 3v4"/></svg>
+                <span><strong>Loại hình</strong>Cơ sở Phật giáo — Di tích lịch sử cấp tỉnh</span>
               </div>
               <div class="location-fact">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                <span><strong>Năm thành lập</strong>1942</span>
+              </div>
+              <div class="location-fact">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
+                <span><strong>Công nhận</strong>Di tích lịch sử - văn hóa cấp tỉnh Đồng Tháp (2008)</span>
+              </div>
+              <div class="location-fact">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M3 11h18"/></svg>
                 <span><strong>Chi phí tham quan</strong>Miễn phí</span>
               </div>
+              <div class="location-fact location-fact--map">
+                <div class="map-embed">
+                  <iframe
+                    src="https://www.google.com/maps?q=Ch%C3%B9a%20Ph%C6%B0%E1%BB%9Bc%20Thi%E1%BB%87n%2C%20T%C3%A2n%20H%E1%BB%93ng%2C%20%C4%90%E1%BB%93ng%20Th%C3%A1p&output=embed"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    aria-label="Bản đồ vị trí Chùa Phước Thiện"
+                  ></iframe>
+                </div>
+              </div>
             </div>
+
           </aside>
         </div>
       </div>
@@ -98,6 +841,248 @@
   <!-- ============ CONTACT / FOOTER (dùng chung — xem footer.html) ============ -->
   <div data-include="../footer.html"></div>
 
+  <!-- ============ FLOATING ACTION BUTTON ============ -->
+  <div class="fab-group" id="fabGroup">
+    <button class="fab-btn" id="fabDirection" type="button" aria-label="Chỉ đường">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8-8-2Z"/></svg>
+    </button>
+    <button class="fab-btn" id="fabShare" type="button" aria-label="Chia sẻ">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 3.9M15.4 6.6l-6.8 3.9"/></svg>
+    </button>
+    <button class="fab-btn" id="fabTop" type="button" aria-label="Lên đầu trang">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+  </div>
+
   <script src="../script.js"></script>
+
+  <!-- ============ SCRIPT RIÊNG CHO TRANG CHI TIẾT ĐỊA ĐIỂM ============
+       Toàn bộ tính năng dưới đây (progress bar, map, timeline reveal,
+       accordion, artifact slider, FAB, share) chỉ dùng vanilla JS,
+       không phụ thuộc thư viện ngoài. Có thể copy nguyên khối <script>
+       này sang các trang chi tiết địa điểm khác, chỉ cần đổi ADDRESS
+       và id phần tử nếu trùng.
+  ============================================================ -->
+  <script>
+    (function () {
+      'use strict';
+
+      const $ = (sel, scope) => (scope || document).querySelector(sel);
+      const $$ = (sel, scope) => Array.from((scope || document).querySelectorAll(sel));
+
+      // Địa chỉ dùng chung cho bản đồ, chỉ đường và sao chép địa chỉ
+      const ADDRESS = 'Chùa Phước Thiện, WC9J+9J4, ấp Công Tạo, xã Tân Hồng, tỉnh Đồng Tháp';
+      const PAGE_URL = window.location.href;
+      const PAGE_TITLE = document.title;
+
+      /* ------------------------------------------------------------
+         1. Reading progress bar
+      ------------------------------------------------------------ */
+      function initReadingProgress() {
+        const bar = $('#readingProgress');
+        if (!bar) return;
+
+        const update = () => {
+          const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+          bar.style.width = pct + '%';
+        };
+
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+      }
+
+      /* ------------------------------------------------------------
+         2. Sao chép địa chỉ (card Google Map)
+      ------------------------------------------------------------ */
+      function initCopyAddress() {
+        const btn = $('#copyAddressBtn');
+        const feedback = $('#copyFeedback');
+        if (!btn) return;
+
+        btn.addEventListener('click', () => {
+          copyText(ADDRESS)
+            .then(() => showFeedback(feedback, 'Đã sao chép địa chỉ!'))
+            .catch(() => showFeedback(feedback, 'Không thể sao chép, vui lòng thử lại.'));
+        });
+      }
+
+      function showFeedback(el, text) {
+        if (!el) return;
+        el.textContent = text;
+        el.classList.add('is-visible');
+        window.setTimeout(() => el.classList.remove('is-visible'), 2200);
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        }
+        // Phương án dự phòng cho trình duyệt cũ / kết nối không an toàn
+        return new Promise((resolve, reject) => {
+          try {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
+        });
+      }
+
+      /* ------------------------------------------------------------
+         3. Accordion — click mở/đóng, animation chiều cao bằng CSS
+      ------------------------------------------------------------ */
+      function initAccordion() {
+        $$('.accordion-trigger').forEach((trigger) => {
+          trigger.addEventListener('click', () => {
+            const item = trigger.closest('.accordion-item');
+            const isOpen = item.classList.contains('is-open');
+            item.classList.toggle('is-open', !isOpen);
+            trigger.setAttribute('aria-expanded', String(!isOpen));
+          });
+        });
+      }
+
+      /* ------------------------------------------------------------
+         4. Hiện vật — slider ngang: nút mũi tên + kéo bằng chuột
+      ------------------------------------------------------------ */
+      function initArtifactSlider() {
+        const track = $('#artifactSlider');
+        const prevBtn = $('#artifactPrev');
+        const nextBtn = $('#artifactNext');
+        if (!track) return;
+
+        const step = () => {
+          const card = track.querySelector('.artifact-card');
+          const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '18');
+          return (card ? card.getBoundingClientRect().width : 200) + gap;
+        };
+
+        if (prevBtn) prevBtn.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+        if (nextBtn) nextBtn.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+
+        // Kéo ngang bằng chuột (desktop) — cảm ứng dùng scroll-snap gốc của trình duyệt
+        let isDown = false;
+        let startX = 0;
+        let startScroll = 0;
+
+        track.addEventListener('mousedown', (e) => {
+          isDown = true;
+          track.classList.add('is-dragging');
+          startX = e.pageX;
+          startScroll = track.scrollLeft;
+        });
+
+        window.addEventListener('mouseup', () => {
+          isDown = false;
+          track.classList.remove('is-dragging');
+        });
+
+        track.addEventListener('mouseleave', () => {
+          isDown = false;
+          track.classList.remove('is-dragging');
+        });
+
+        track.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          track.scrollLeft = startScroll - (e.pageX - startX);
+        });
+      }
+
+      /* ------------------------------------------------------------
+         5. Floating Action Button — hiện khi cuộn xuống
+      ------------------------------------------------------------ */
+      function initFab() {
+        const group = $('#fabGroup');
+        if (!group) return;
+
+        const toggle = () => group.classList.toggle('is-visible', window.scrollY > 400);
+        toggle();
+        window.addEventListener('scroll', toggle, { passive: true });
+
+        const topBtn = $('#fabTop');
+        if (topBtn) {
+          topBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
+
+        const directionBtn = $('#fabDirection');
+        if (directionBtn) {
+          directionBtn.addEventListener('click', () => {
+            window.open('https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(ADDRESS), '_blank', 'noopener');
+          });
+        }
+
+        const shareBtn = $('#fabShare');
+        if (shareBtn) {
+          shareBtn.addEventListener('click', shareCurrentPage);
+        }
+      }
+
+      /* ------------------------------------------------------------
+         6. Chia sẻ địa điểm
+      ------------------------------------------------------------ */
+      function initShare() {
+        const fbBtn = $('#shareFacebook');
+        if (fbBtn) fbBtn.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(PAGE_URL);
+
+        // Lưu ý: chia sẻ Messenger đầy đủ cần Facebook App ID riêng của trang.
+        const mesBtn = $('#shareMessenger');
+        if (mesBtn) mesBtn.href = 'https://www.facebook.com/dialog/send?link=' + encodeURIComponent(PAGE_URL) + '&redirect_uri=' + encodeURIComponent(PAGE_URL);
+
+        const zaloBtn = $('#shareZalo');
+        if (zaloBtn) zaloBtn.href = 'https://zalo.me/share/?u=' + encodeURIComponent(PAGE_URL) + '&t=' + encodeURIComponent(PAGE_TITLE);
+
+        const copyBtn = $('#shareCopyBtn');
+        const copyLabel = $('#shareCopyLabel');
+        if (copyBtn) {
+          copyBtn.addEventListener('click', () => {
+            copyText(PAGE_URL).then(() => {
+              if (copyLabel) {
+                const original = copyLabel.textContent;
+                copyLabel.textContent = 'Đã sao chép!';
+                window.setTimeout(() => { copyLabel.textContent = original; }, 2000);
+              }
+            });
+          });
+        }
+
+        // Chỉ hiện nút "Chia sẻ nhanh" nếu trình duyệt hỗ trợ Web Share API
+        const nativeBtn = $('#nativeShareBtn');
+        if (nativeBtn && navigator.share) {
+          nativeBtn.hidden = false;
+          nativeBtn.addEventListener('click', shareCurrentPage);
+        }
+      }
+
+      function shareCurrentPage() {
+        if (navigator.share) {
+          navigator.share({ title: PAGE_TITLE, url: PAGE_URL }).catch(() => {});
+        } else {
+          const copyBtn = $('#shareCopyBtn');
+          if (copyBtn) copyBtn.click();
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        initReadingProgress();
+        initCopyAddress();
+        initAccordion();
+        initArtifactSlider();
+        initFab();
+        initShare();
+      });
+    })();
+  </script>
 </body>
 </html>
