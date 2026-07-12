@@ -18,7 +18,7 @@
   <meta property="og:site_name" content="Explore Tân Hồng" />
 
   <!-- ===== Favicon ===== -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230F766E'/%3E%3Ctext x='50' y='68' font-size='58' fill='white' text-anchor='middle' font-family='serif'%3ET%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" href="/assets/pic/logo.png" />
 
   <!-- ===== Fonts ===== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,15 +26,273 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    .location-main h2,
+    .location-main h3 {
+      font-family: 'Fraunces', serif;
+      color: var(--color-primary);
+      line-height: 1.3;
+    }
+    .location-main h2 { font-size: 1.5rem; margin: 36px 0 14px; }
+    .location-main h3 { font-size: 1.2rem; margin: 30px 0 12px; }
+    .location-main h2:first-child,
+    .location-main h3:first-child { margin-top: 0; }
+
+    .location-main ul.prose-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0 0 20px;
+    }
+    .location-main ul.prose-list li {
+      position: relative;
+      padding-left: 22px;
+      line-height: 1.75;
+      color: var(--color-text);
+    }
+    .location-main ul.prose-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-secondary);
+    }
+
+    .location-source {
+      background: var(--color-bg);
+      border-left: 3px solid var(--color-accent);
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      color: var(--color-text-muted);
+      margin: 4px 0 22px;
+    }
+
+    .location-tag {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      background: rgba(15, 118, 110, 0.1);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      margin-bottom: 14px;
+    }
+
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      z-index: 999;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+      transition: width 0.12s linear;
+    }
+
+    #backToTop { display: none !important; }
+
+    .map-card {
+      margin-top: 22px;
+      background: var(--color-card);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .map-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .map-card h3 { font-size: 1.05rem; margin-bottom: 14px; }
+    .map-embed {
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      margin-bottom: 16px;
+      background: var(--color-bg);
+      width: 100%;
+      min-height: 200px;
+    }
+    .location-fact--map .map-embed {
+      width: 100%;
+      margin-left: 0;
+    }
+    .map-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .map-actions { display: flex; flex-direction: column; gap: 10px; }
+    .map-actions .btn { width: 100%; }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--color-primary);
+      color: var(--color-primary);
+      font-weight: 600;
+      font-size: 0.92rem;
+      background: transparent;
+      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    }
+    .btn-outline:hover { background: var(--color-primary); color: #fff; transform: translateY(-2px); }
+    .copy-feedback {
+      font-size: 0.8rem;
+      color: var(--color-secondary);
+      text-align: center;
+      margin-top: 8px;
+      opacity: 0;
+      height: 0;
+      transition: opacity 0.3s var(--ease);
+    }
+    .copy-feedback.is-visible { opacity: 1; height: auto; }
+
+    .timeline {
+      position: relative;
+      margin: 12px 0 40px;
+      padding-left: 30px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: var(--color-border);
+    }
+    .timeline-item { position: relative; padding-bottom: 28px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: -30px;
+      top: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--color-card);
+      border: 3px solid var(--color-primary);
+      box-shadow: 0 0 0 4px var(--color-bg);
+    }
+    .timeline-year {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      color: var(--color-primary);
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .timeline-text { color: var(--color-text); line-height: 1.6; }
+
+    .quote-section {
+      background: var(--color-bg);
+      border-radius: var(--radius-lg);
+      padding: 48px 32px;
+      text-align: center;
+      margin: 8px 0 40px;
+    }
+    .quote-icon { color: var(--color-accent); opacity: 0.55; margin-bottom: 14px; }
+    .quote-text {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.6vw, 1.85rem);
+      line-height: 1.65;
+      color: var(--color-primary);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .stats-section { margin: 8px 0 44px; }
+    .stats-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      text-align: center;
+      color: var(--color-primary);
+      margin-bottom: 24px;
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .stat-card {
+      background: var(--color-card);
+      border-radius: var(--radius-lg);
+      padding: 26px 14px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .stat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+
+    .share-section {
+      background: var(--color-bg);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-align: center;
+      margin: 8px 0 44px;
+    }
+    .share-title { font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--color-primary); margin-bottom: 18px; }
+    .share-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      background: var(--color-card);
+      color: var(--color-text);
+      font-weight: 600;
+      font-size: 0.88rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+    }
+    .share-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .share-btn.facebook:hover { background: #1877F2; color: #fff; }
+    .share-btn.messenger:hover { background: #0084FF; color: #fff; }
+    .share-btn.zalo:hover { background: #0068FF; color: #fff; }
+    .share-btn.copy:hover, .share-btn.native:hover { background: var(--color-primary); color: #fff; }
+    .share-btn[hidden] { display: none; }
+
+    .fab-group {
+      position: fixed;
+      right: 24px;
+      bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 500;
+      opacity: 0;
+      transform: scale(0.7);
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .fab-group.is-visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+    .fab-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition-fast), background var(--transition-fast);
+    }
+    .fab-btn:hover { transform: translateY(-4px) scale(1.06); background: var(--color-secondary); }
+
+    @media (max-width: 640px) {
+      .fab-group { right: 16px; bottom: 16px; }
+      .fab-btn { width: 44px; height: 44px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ============ HEADER / NAVIGATION (dùng chung — xem header.html) ============ -->
+  <div class="reading-progress" id="readingProgress"></div>
+
   <div data-include="../header.html"></div>
 
   <main id="main-content">
 
-    <!-- ============ BANNER ĐỊA ĐIỂM ============ -->
     <section class="location-hero">
       <div class="hero-media" aria-hidden="true">
         <img src="../assets/images/nha-tho-tan-hong.jpg" alt="" class="hero-img" />
@@ -53,7 +311,6 @@
       </div>
     </section>
 
-    <!-- ============ NỘI DUNG CHI TIẾT ============ -->
     <section class="section" aria-labelledby="location-content-title">
       <div class="container">
         <h2 id="location-content-title" class="sr-only">Thông tin về Nhà Thờ Tân Hồng</h2>
@@ -63,6 +320,80 @@
             <p>Nhà Thờ Tân Hồng là điểm đến quen thuộc của giáo dân trong các buổi lễ Chúa Nhật và các dịp lễ trọng của Công giáo như Giáng Sinh, Phục Sinh.</p>
             <p>Không gian nhà thờ trang nghiêm, ấm áp, là nơi gắn kết cộng đồng giáo dân địa phương qua nhiều thế hệ sinh sống tại vùng biên giới Tân Hồng.</p>
             <p><em>Nội dung giới thiệu chi tiết hơn (lịch sử hình thành, kiến trúc, hoạt động lễ hội...) và hình ảnh thật của Nhà Thờ Tân Hồng có thể được cập nhật bổ sung tại đây.</em></p>
+
+            <!-- ============ ĐỊA ĐIỂM LIÊN QUAN ============ -->
+            <div class="related-section">
+              <h2 class="related-title">Địa điểm liên quan</h2>
+              <div class="related-grid">
+                <a href="giao-xu-go-da.html" class="related-card reveal">
+                  <div class="related-media"><img loading="lazy" src="../assets/images/giao-xu-go-da.jpg" alt="Giáo Xứ Gò Da" /></div>
+                  <div class="related-body">
+                    <h4>Giáo Xứ Gò Da</h4>
+                    <p>Giáo xứ lâu đời gắn liền với lịch sử vùng biên giới Tân Hồng.</p>
+                    <span class="related-link">Khám phá
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                  </div>
+                </a>
+                <a href="thanh-that-tan-hong.html" class="related-card reveal">
+                  <div class="related-media"><img loading="lazy" src="../assets/images/thanh-that-tan-hong.jpg" alt="Thánh thất Tân Hồng" /></div>
+                  <div class="related-body">
+                    <h4>Thánh thất Tân Hồng</h4>
+                    <p>Nơi sinh hoạt tín ngưỡng Cao Đài mang kiến trúc đặc trưng riêng biệt.</p>
+                    <span class="related-link">Khám phá
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                  </div>
+                </a>
+                <a href="chua-phuoc-thien.html" class="related-card reveal">
+                  <div class="related-media"><img loading="lazy" src="../assets/images/chua-phuoc-thien.jpg" alt="Chùa Phước Thiện" /></div>
+                  <div class="related-body">
+                    <h4>Chùa Phước Thiện</h4>
+                    <p>Di tích lịch sử gắn liền với Hòa thượng Trần Liên, cao tăng yêu nước.</p>
+                    <span class="related-link">Khám phá
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                  </div>
+                </a>
+                <a href="chua-lap-phuc.html" class="related-card reveal">
+                  <div class="related-media"><img loading="lazy" src="../assets/images/chua-lap-phuc.jpg" alt="Chùa Lập Phúc" /></div>
+                  <div class="related-body">
+                    <h4>Chùa Lập Phúc</h4>
+                    <p>Chốn thiền môn yên bình, thu hút phật tử gần xa đến chiêm bái.</p>
+                    <span class="related-link">Khám phá
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- ============ SHARE — Chia sẻ địa điểm ============ -->
+            <div class="share-section reveal">
+              <h2 class="share-title">Chia sẻ địa điểm</h2>
+              <div class="share-buttons">
+                <a class="share-btn facebook" id="shareFacebook" href="#" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5H16l.4-3H13.5V8.4c0-.87.24-1.46 1.5-1.46H16.5V4.32C16.2 4.28 15.2 4.2 14 4.2c-2.4 0-4 1.46-4 4.14V10.5H7.5v3H10V21h3.5Z"/></svg>
+                  Facebook
+                </a>
+                <a class="share-btn messenger" id="shareMessenger" href="#" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.15 2 11.25c0 2.9 1.44 5.49 3.7 7.19V22l3.38-1.86c.9.25 1.87.39 2.92.39 5.52 0 10-4.15 10-9.28C22 6.15 17.52 2 12 2Zm1 12.5-2.55-2.72L5.5 15l5.5-5.83 2.55 2.72L18.5 8.5 13 14.5Z"/></svg>
+                  Messenger
+                </a>
+                <a class="share-btn zalo" id="shareZalo" href="#" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.15 2 11.25c0 2.9 1.44 5.49 3.7 7.19V22l3.38-1.86c.9.25 1.87.39 2.92.39 5.52 0 10-4.15 10-9.28C22 6.15 17.52 2 12 2Z"/></svg>
+                  Zalo
+                </a>
+                <button class="share-btn copy" id="shareCopyBtn" type="button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                  <span id="shareCopyLabel">Copy Link</span>
+                </button>
+                <button class="share-btn native" id="nativeShareBtn" type="button" hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 3.9M15.4 6.6l-6.8 3.9"/></svg>
+                  Chia sẻ nhanh
+                </button>
+              </div>
+            </div>
 
             <div class="location-back">
               <a href="../index.html#spiritual" class="btn btn-primary" data-scroll>
@@ -74,6 +405,7 @@
 
           <aside class="location-aside reveal">
             <h3>Thông tin nhanh</h3>
+
             <div class="location-facts">
               <div class="location-fact location-fact--copy">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
@@ -112,6 +444,7 @@
                 </div>
               </div>
             </div>
+
           </aside>
         </div>
       </div>
@@ -119,9 +452,159 @@
 
   </main>
 
-  <!-- ============ CONTACT / FOOTER (dùng chung — xem footer.html) ============ -->
   <div data-include="../footer.html"></div>
 
+  <div class="fab-group" id="fabGroup">
+    <button class="fab-btn" id="fabDirection" type="button" aria-label="Chỉ đường">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8-8-2Z"/></svg>
+    </button>
+    <button class="fab-btn" id="fabShare" type="button" aria-label="Chia sẻ">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 3.9M15.4 6.6l-6.8 3.9"/></svg>
+    </button>
+    <button class="fab-btn" id="fabTop" type="button" aria-label="Lên đầu trang">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+  </div>
+
   <script src="../script.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const $ = (sel, scope) => (scope || document).querySelector(sel);
+      const $$ = (sel, scope) => Array.from((scope || document).querySelectorAll(sel));
+
+      const ADDRESS = 'Nhà Thờ Tân Hồng, Huyện Tân Hồng, tỉnh Đồng Tháp';
+      const PAGE_URL = window.location.href;
+      const PAGE_TITLE = document.title;
+
+      function initReadingProgress() {
+        const bar = $('#readingProgress');
+        if (!bar) return;
+        const update = () => {
+          const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+          bar.style.width = pct + '%';
+        };
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+      }
+
+      function initCopyAddress() {
+        const btn = $('#copyAddressBtn');
+        const feedback = $('#copyFeedback');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          copyText(ADDRESS)
+            .then(() => showFeedback(feedback, 'Đã sao chép địa chỉ!'))
+            .catch(() => showFeedback(feedback, 'Không thể sao chép, vui lòng thử lại.'));
+        });
+      }
+
+      function showFeedback(el, text) {
+        if (!el) return;
+        el.textContent = text;
+        el.classList.add('is-visible');
+        window.setTimeout(() => el.classList.remove('is-visible'), 2200);
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        }
+        return new Promise((resolve, reject) => {
+          try {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            resolve();
+          } catch (err) { reject(err); }
+        });
+      }
+
+      function initAccordion() {
+        $$('.accordion-trigger').forEach((trigger) => {
+          trigger.addEventListener('click', () => {
+            const item = trigger.closest('.accordion-item');
+            const isOpen = item.classList.contains('is-open');
+            item.classList.toggle('is-open', !isOpen);
+            trigger.setAttribute('aria-expanded', String(!isOpen));
+          });
+        });
+      }
+
+      function initArtifactSlider() {
+        const track = $('#artifactSlider');
+        const prevBtn = $('#artifactPrev');
+        const nextBtn = $('#artifactNext');
+        if (!track) return;
+        const step = () => {
+          const card = track.querySelector('.artifact-card');
+          const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '18');
+          return (card ? card.getBoundingClientRect().width : 200) + gap;
+        };
+        if (prevBtn) prevBtn.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+        if (nextBtn) nextBtn.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+        let isDown = false, startX = 0, startScroll = 0;
+        track.addEventListener('mousedown', (e) => { isDown = true; track.classList.add('is-dragging'); startX = e.pageX; startScroll = track.scrollLeft; });
+        window.addEventListener('mouseup', () => { isDown = false; track.classList.remove('is-dragging'); });
+        track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('is-dragging'); });
+        track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); track.scrollLeft = startScroll - (e.pageX - startX); });
+      }
+
+      function initFab() {
+        const group = $('#fabGroup');
+        if (!group) return;
+        const toggle = () => group.classList.toggle('is-visible', window.scrollY > 400);
+        toggle();
+        window.addEventListener('scroll', toggle, { passive: true });
+        const topBtn = $('#fabTop');
+        if (topBtn) topBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        const directionBtn = $('#fabDirection');
+        if (directionBtn) directionBtn.addEventListener('click', () => { window.open('https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(ADDRESS), '_blank', 'noopener'); });
+        const shareBtn = $('#fabShare');
+        if (shareBtn) shareBtn.addEventListener('click', shareCurrentPage);
+      }
+
+      function initShare() {
+        const fbBtn = $('#shareFacebook');
+        if (fbBtn) fbBtn.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(PAGE_URL);
+        const mesBtn = $('#shareMessenger');
+        if (mesBtn) mesBtn.href = 'https://www.facebook.com/dialog/send?link=' + encodeURIComponent(PAGE_URL) + '&redirect_uri=' + encodeURIComponent(PAGE_URL);
+        const zaloBtn = $('#shareZalo');
+        if (zaloBtn) zaloBtn.href = 'https://zalo.me/share/?u=' + encodeURIComponent(PAGE_URL) + '&t=' + encodeURIComponent(PAGE_TITLE);
+        const copyBtn = $('#shareCopyBtn');
+        const copyLabel = $('#shareCopyLabel');
+        if (copyBtn) {
+          copyBtn.addEventListener('click', () => {
+            copyText(PAGE_URL).then(() => {
+              if (copyLabel) { const original = copyLabel.textContent; copyLabel.textContent = 'Đã sao chép!'; window.setTimeout(() => { copyLabel.textContent = original; }, 2000); }
+            });
+          });
+        }
+        const nativeBtn = $('#nativeShareBtn');
+        if (nativeBtn && navigator.share) { nativeBtn.hidden = false; nativeBtn.addEventListener('click', shareCurrentPage); }
+      }
+
+      function shareCurrentPage() {
+        if (navigator.share) { navigator.share({ title: PAGE_TITLE, url: PAGE_URL }).catch(() => {}); } else { const copyBtn = $('#shareCopyBtn'); if (copyBtn) copyBtn.click(); }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        initReadingProgress();
+        initCopyAddress();
+        initAccordion();
+        initArtifactSlider();
+        initFab();
+        initShare();
+      });
+    })();
+  </script>
 </body>
 </html>

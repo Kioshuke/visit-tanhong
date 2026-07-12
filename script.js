@@ -3,12 +3,12 @@
    Contents:
    0. Header/Footer partial loader (dùng chung cho mọi trang)
    1. Utilities
-   2. Sticky navbar on scroll
+   2. Sticky header
    3. Mobile menu toggle
-   4. Smooth scrolling + active link highlighting
-   5. Scroll reveal animations (IntersectionObserver)
-   6. Animated statistic counters
-   7. Dark mode toggle (persisted)
+   4. Theme toggle (persisted)
+   5. Smooth scrolling + active link highlighting
+   6. Scroll reveal animations (IntersectionObserver)
+   7. Animated statistic counters
    8. Back to top button
    9. Footer year
    ========================================================================== */
@@ -28,12 +28,13 @@
     loadPartials().finally(() => {
       initStickyHeader();
       initMobileMenu();
+      initThemeToggle();
       initSmoothScroll();
       initActiveLinkOnScroll();
       initScrollReveal();
       initSpiritualSlider();
+      initLightbox();
       initCounters();
-      initThemeToggle();
       initBackToTop();
       initFooterYear();
     });
@@ -56,7 +57,8 @@
 
     const requests = includeNodes.map((node) => {
       const file = node.getAttribute('data-include');
-      return fetch(file)
+      const cacheBust = '?v=' + Date.now();
+      return fetch(file + cacheBust)
         .then((res) => {
           if (!res.ok) throw new Error(`Không thể tải ${file} (HTTP ${res.status})`);
           return res.text();
@@ -77,59 +79,49 @@
   }
 
   /* ------------------------------------------------------------------
-     2. Sticky navbar on scroll
-     Adds a background/blur to the header once the page has scrolled
-     past the hero threshold, with a small buffer to avoid flicker.
+     2. Sticky header
   ------------------------------------------------------------------ */
   function initStickyHeader() {
-    const header = $('#siteHeader');
+    var header = document.getElementById('siteHeader');
     if (!header) return;
-
-    const THRESHOLD = 60;
-
-    const updateHeader = () => {
-      header.classList.toggle('is-scrolled', window.scrollY > THRESHOLD);
-    };
-
-    updateHeader();
-    window.addEventListener('scroll', updateHeader, { passive: true });
+    var THRESHOLD = 60;
+    var update = function () { header.classList.toggle('is-scrolled', window.scrollY > THRESHOLD); };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
   }
 
   /* ------------------------------------------------------------------
      3. Mobile menu toggle
   ------------------------------------------------------------------ */
   function initMobileMenu() {
-    const toggle = $('#menuToggle');
-    const menu = $('#navMenu');
+    var toggle = document.getElementById('menuToggle');
+    var menu = document.getElementById('navMenu');
     if (!toggle || !menu) return;
 
-    const closeMenu = () => {
+    function closeMenu() {
       toggle.classList.remove('is-active');
       menu.classList.remove('is-open');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-label', 'Mở menu điều hướng');
-    };
-
-    const openMenu = () => {
+    }
+    function openMenu() {
       toggle.classList.add('is-active');
       menu.classList.add('is-open');
       toggle.setAttribute('aria-expanded', 'true');
       toggle.setAttribute('aria-label', 'Đóng menu điều hướng');
-    };
+    }
 
-    toggle.addEventListener('click', () => {
-      const isOpen = menu.classList.contains('is-open');
-      isOpen ? closeMenu() : openMenu();
+    toggle.addEventListener('click', function () {
+      menu.classList.contains('is-open') ? closeMenu() : openMenu();
     });
 
-    // Close the menu whenever a link is chosen (mobile UX)
-    $$('.nav-link', menu).forEach((link) => {
-      link.addEventListener('click', closeMenu);
-    });
+    var links = menu.querySelectorAll('.nav-link');
+    for (var i = 0; i < links.length; i++) {
+      links[i].addEventListener('click', closeMenu);
+    }
 
-    // Close on Escape for keyboard users
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && menu.classList.contains('is-open')) {
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) {
         closeMenu();
         toggle.focus();
       }
@@ -137,7 +129,30 @@
   }
 
   /* ------------------------------------------------------------------
-     4. Smooth scrolling + active link highlighting
+     4. Theme toggle (persisted)
+  ------------------------------------------------------------------ */
+  function initThemeToggle() {
+    var toggle = document.getElementById('themeToggle');
+    if (!toggle) return;
+    var root = document.documentElement;
+    var KEY = 'explore-tan-hong-theme';
+
+    function applyTheme(t) {
+      root.setAttribute('data-theme', t);
+      toggle.setAttribute('aria-pressed', String(t === 'dark'));
+    }
+
+    applyTheme(localStorage.getItem(KEY) || 'light');
+
+    toggle.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem(KEY, next);
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     5. Smooth scrolling + active link highlighting
      Native CSS `scroll-behavior: smooth` already handles motion; this
      adds an offset correction for the fixed header and keeps focus
      management accessible for keyboard users.
@@ -219,7 +234,7 @@
   }
 
   /* ------------------------------------------------------------------
-     5. Scroll reveal animations
+     3. Scroll reveal animations
      Elements with the `.reveal` class fade/slide into place the first
      time they enter the viewport. Skips entirely for users who prefer
      reduced motion.
@@ -309,7 +324,44 @@
   }
 
   /* ------------------------------------------------------------------
-     6. Animated statistic counters
+     5b. Lightbox for gallery images
+  ------------------------------------------------------------------ */
+  function initLightbox() {
+    const overlay = $('#lightbox');
+    const img = $('#lightboxImg');
+    const caption = $('#lightboxCaption');
+    const closeBtn = $('#lightboxClose');
+    if (!overlay || !img) return;
+
+    const items = $$('.gallery-item');
+    items.forEach((item) => {
+      item.addEventListener('click', () => {
+        const imgEl = item.querySelector('img');
+        if (!imgEl) return;
+        img.src = imgEl.src;
+        img.alt = imgEl.alt;
+        caption.textContent = imgEl.alt;
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    const closeLightbox = () => {
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeLightbox();
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     4. Animated statistic counters
      Counts up from 0 to the data-target value once the stats section
      scrolls into view. Runs once per page load.
   ------------------------------------------------------------------ */
@@ -362,33 +414,7 @@
   }
 
   /* ------------------------------------------------------------------
-     7. Dark mode toggle (persisted via localStorage)
-  ------------------------------------------------------------------ */
-  function initThemeToggle() {
-    const toggle = $('#themeToggle');
-    const root = document.documentElement;
-    if (!toggle) return;
-
-    const STORAGE_KEY = 'explore-tan-hong-theme';
-
-    const applyTheme = (theme) => {
-      root.setAttribute('data-theme', theme);
-      toggle.setAttribute('aria-pressed', String(theme === 'dark'));
-    };
-
-    // Respect a saved preference, otherwise default to the light theme
-    const saved = localStorage.getItem(STORAGE_KEY);
-    applyTheme(saved ?? 'light');
-
-    toggle.addEventListener('click', () => {
-      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem(STORAGE_KEY, next);
-    });
-  }
-
-  /* ------------------------------------------------------------------
-     8. Back to top button
+     5. Back to top button
   ------------------------------------------------------------------ */
   function initBackToTop() {
     const button = $('#backToTop');
@@ -407,7 +433,7 @@
   }
 
   /* ------------------------------------------------------------------
-     9. Footer year
+     6. Footer year
   ------------------------------------------------------------------ */
   function initFooterYear() {
     const yearEl = $('#year');
