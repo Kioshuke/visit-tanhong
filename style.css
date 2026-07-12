@@ -61,7 +61,7 @@
   /* Layout */
   --container-width: 1180px;
   --header-height: 76px;
-  --section-padding: clamp(64px, 9vw, 120px);
+  --section-padding: clamp(28px, 4vw, 56px);
 
   /* Motion */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -507,7 +507,7 @@ html[data-theme='dark'] .icon-moon { display: block; }
 
 .section-head {
   max-width: 640px;
-  margin-bottom: 56px;
+  margin-bottom: 24px;
 }
 
 .section-head h2 {
@@ -558,10 +558,10 @@ html[data-theme='dark'] .icon-moon { display: block; }
 .card:hover .card-media img { transform: scale(1.08); }
 
 .card-body {
-  padding: 24px;
+  padding: 16px 18px 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
 }
 
@@ -585,7 +585,7 @@ html[data-theme='dark'] .icon-moon { display: block; }
 .slider-track {
   display: flex;
   gap: var(--slider-gap);
-  transition: transform var(--transition-med) var(--ease);
+  transition: transform 0.65s cubic-bezier(0.33, 1, 0.68, 1);
   will-change: transform;
 }
 
@@ -655,7 +655,7 @@ html[data-theme='dark'] .card-link { color: var(--color-secondary); }
 }
 
 .feature-item {
-  padding: 28px;
+  padding: 20px;
   background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -669,7 +669,7 @@ html[data-theme='dark'] .card-link { color: var(--color-secondary); }
 
 .feature-item h3 {
   font-size: 1.1rem;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: var(--color-primary);
 }
 
@@ -862,7 +862,21 @@ html[data-theme='dark'] .feature-item h3 { color: var(--color-secondary); }
 .wave-divider--top path { fill: var(--color-bg); }
 
 /* ==========================================================================
-   13. Footer
+   13a. Map section
+   ========================================================================== */
+.map-section { border-radius: var(--radius-lg); overflow: hidden; }
+.map-embed-wrap {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 16px;
+  height: 480px;
+}
+.map-embed-wrap iframe { display: block; width: 100%; height: 540px; border: 0; margin-top: -60px; }
+.map-actions { display: flex; justify-content: center; }
+
+/* ==========================================================================
+   14. Footer
    ========================================================================== */
 .site-footer {
   background: #0B1420;
@@ -977,13 +991,12 @@ html[data-theme='dark'] .feature-item h3 { color: var(--color-secondary); }
 
 /* Slider-specific reveal: slide from right/left instead of up */
 .spiritual-slider .reveal {
-  /* override default translateY with horizontal translation */
   transform: translateX(0);
-  opacity: 0;
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  opacity: 1;
+  transition: opacity 0.45s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
-.spiritual-slider .reveal.slide-from-right { transform: translateX(36px); }
-.spiritual-slider .reveal.slide-from-left { transform: translateX(-36px); }
+.spiritual-slider .reveal.slide-from-right { transform: translateX(40px); opacity: 0; }
+.spiritual-slider .reveal.slide-from-left { transform: translateX(-40px); opacity: 0; }
 .spiritual-slider .reveal.slide-from-right.is-visible,
 .spiritual-slider .reveal.slide-from-left.is-visible {
   transform: translateX(0);

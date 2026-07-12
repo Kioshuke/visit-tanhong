@@ -264,7 +264,7 @@
   }
 
   /* ------------------------------------------------------------------
-     Spiritual section slider (3-up carousel)
+     Spiritual section slider (3-up carousel + auto-slide)
   ------------------------------------------------------------------ */
   function initSpiritualSlider() {
     const slider = document.querySelector('.spiritual-slider');
@@ -279,7 +279,8 @@
 
     const gap = parseInt(getComputedStyle(track).gap) || 28;
     let index = 0;
-    let lastDirection = 'right';
+    let direction = 1; // 1 = right, -1 = left
+    let autoTimer = null;
 
     function getVisibleCount() {
       const w = viewport.offsetWidth;
@@ -288,24 +289,26 @@
       return 3;
     }
 
+    function getMaxIndex() {
+      return Math.max(0, slides.length - getVisibleCount());
+    }
+
     function update() {
       const visible = getVisibleCount();
       const slideWidth = slides[0].offsetWidth;
       const step = Math.round(slideWidth + gap);
-      const maxIndex = Math.max(0, slides.length - visible);
+      const maxIndex = getMaxIndex();
       index = Math.min(Math.max(0, index), maxIndex);
-      const translateX = -(index * step);
-      track.style.transform = `translateX(${translateX}px)`;
+      track.style.transform = `translateX(${-(index * step)}px)`;
       prev.disabled = index === 0;
       next.disabled = index === maxIndex;
-      // manage slide-in direction classes for visible slides
+      // slide-in direction classes
       const start = index;
       const end = index + visible - 1;
       slides.forEach((sl, i) => {
         if (i >= start && i <= end) {
           sl.classList.remove('slide-from-left', 'slide-from-right');
-          sl.classList.add(lastDirection === 'right' ? 'slide-from-right' : 'slide-from-left');
-          // force reflow before adding visible so transition runs
+          sl.classList.add(direction === 1 ? 'slide-from-right' : 'slide-from-left');
           void sl.offsetWidth;
           sl.classList.add('is-visible');
         } else {
@@ -315,12 +318,34 @@
       });
     }
 
-    next.addEventListener('click', () => { lastDirection = 'right'; index += 1; update(); });
-    prev.addEventListener('click', () => { lastDirection = 'left'; index -= 1; update(); });
+    function autoSlide() {
+      const maxIndex = getMaxIndex();
+      if (index >= maxIndex) direction = -1;
+      else if (index <= 0) direction = 1;
+      index += direction;
+      update();
+    }
+
+    function startAuto() {
+      stopAuto();
+      autoTimer = setInterval(autoSlide, 3000);
+    }
+
+    function stopAuto() {
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    next.addEventListener('click', () => { direction = 1; index += 1; update(); startAuto(); });
+    prev.addEventListener('click', () => { direction = -1; index -= 1; update(); startAuto(); });
+
+    // pause on hover
+    slider.addEventListener('mouseenter', stopAuto);
+    slider.addEventListener('mouseleave', startAuto);
 
     window.addEventListener('resize', () => { requestAnimationFrame(update); });
     window.addEventListener('load', update);
     setTimeout(update, 60);
+    startAuto();
   }
 
   /* ------------------------------------------------------------------
